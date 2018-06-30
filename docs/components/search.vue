@@ -1,7 +1,7 @@
 <template>
   <div class="bd-search d-flex align-items-center">
     <b-form-input id="bd-search-input" v-model="search" placeholder="Search keywords..." />
-    <button type="button" v-b-toggle.bd-docs-nav class="bd-search-docs-toggle d-md-none p-0 ml-3" aria-label="Toggle docs navigation">
+    <button type="button" v-b-toggle.bd-docs-nav class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" aria-label="Toggle docs navigation">
       <svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path></svg>
     </button>
     <b-popover target="bd-search-input" placement="bottom" triggers="focus">
@@ -43,26 +43,26 @@ function process(readme, section, page) {
 
 // Async build the search database
 import('~/markdown/intro/README.md').then(readme => {
-  process(readme, '', '');
+  process(readme.default, '', '');
 });
 Object.keys(_components).forEach(page => {
   import('~/../src/components/' + page + '/README.md').then(readme => {
-    process(readme, 'components', page);
+    process(readme.default, 'components', page);
   });
 });
 Object.keys(_directives).forEach(page => {
   import('~/../src/directives/' + page + '/README.md').then(readme => {
-    process(readme, 'directives', page);
+    process(readme.default, 'directives', page);
   });
 });
 Object.keys(_reference).forEach(page => {
   import('~/markdown/reference/' + page + '/README.md').then(readme => {
-    process(readme, 'reference', page);
+    process(readme.default, 'reference', page);
   });
 });
 Object.keys(_misc).forEach(page => {
   import('~/markdown/misc/' + page + '/README.md').then(readme => {
-    process(readme, 'misc', page);
+    process(readme.default, 'misc', page);
   });
 });
 

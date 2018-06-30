@@ -1,22 +1,29 @@
-import { mergeData, prefixPropName, copyProps } from '../../utils'
-import { assign } from '../../utils/object'
-import { cardMixin } from '../../mixins'
+import { mergeData } from 'vue-functional-data-merge'
 
-export const props = assign({}, copyProps(cardMixin.props, prefixPropName.bind(null, 'footer')), {
-  footer: {
-    type: String,
-    default: null
-  },
-  footerClass: {
-    type: [String, Object, Array],
-    default: null
+import prefixPropName from '../../utils/prefix-prop-name'
+import copyProps from '../../utils/copyProps'
+import { assign } from '../../utils/object'
+import cardMixin from '../../mixins/card-mixin'
+
+export const props = assign(
+  {},
+  copyProps(cardMixin.props, prefixPropName.bind(null, 'footer')),
+  {
+    footer: {
+      type: String,
+      default: null
+    },
+    footerClass: {
+      type: [String, Object, Array],
+      default: null
+    }
   }
-})
+)
 
 export default {
   functional: true,
   props,
-  render (h, { props, data, slots }) {
+  render (h, { props, data, slots, children }) {
     return h(
       props.footerTag,
       mergeData(data, {
@@ -25,12 +32,16 @@ export default {
           props.footerClass,
           {
             [`bg-${props.footerBgVariant}`]: Boolean(props.footerBgVariant),
-            [`border-${props.footerBorderVariant}`]: Boolean(props.footerBorderVariant),
-            [`text-${props.footerTextVariant}`]: Boolean(props.footerTextVariant)
+            [`border-${props.footerBorderVariant}`]: Boolean(
+              props.footerBorderVariant
+            ),
+            [`text-${props.footerTextVariant}`]: Boolean(
+              props.footerTextVariant
+            )
           }
         ]
       }),
-      slots().default || [h('div', { domProps: { innerHTML: props.footer } })]
+      children || [h('div', { domProps: { innerHTML: props.footer } })]
     )
   }
 }

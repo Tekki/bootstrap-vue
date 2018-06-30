@@ -1,5 +1,6 @@
-import { mergeData, pluckProps } from '../../utils'
-import { arrayIncludes, concat } from '../../utils/array'
+import { mergeData } from 'vue-functional-data-merge'
+import pluckProps from '../../utils/pluck-props'
+import { concat } from '../../utils/array'
 import { assign, keys } from '../../utils/object'
 import { addClass, removeClass } from '../../utils/dom'
 import Link, { propsFactory as linkPropsFactory } from '../link/link'
@@ -15,8 +16,7 @@ const btnProps = {
   },
   size: {
     type: String,
-    default: null,
-    validator: size => arrayIncludes(['sm', '', 'lg'], size)
+    default: null
   },
   variant: {
     type: String,
@@ -99,7 +99,10 @@ export default {
         // Tab index is used when the component becomes a link.
         // Links are tabable, but don't allow disabled,
         // so we mimic that functionality by disabling tabbing.
-        tabindex: props.disabled && isLink ? '-1' : (data.attrs ? data.attrs['tabindex'] : null)
+        tabindex:
+          props.disabled && isLink
+            ? '-1'
+            : data.attrs ? data.attrs['tabindex'] : null
       },
       on
     }

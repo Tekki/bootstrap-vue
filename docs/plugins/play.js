@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import debounce from 'lodash/debounce'
 
 const VUE_REGEX = /<!-- (.*).vue -->/
 const TEMPLATE_REGEX = /<template>([\s\S]*)<\/template>/
@@ -93,8 +94,8 @@ Vue.directive('play', (el, binding, vnode, oldVnode) => {
         // Enable live edit on double click
         pre.ondblclick = async () => {
             pre.className += ' live'
+            // eslint-ignore-next-line
             const hljs = await import('highlightjs')
-            const { debounce } = await import('lodash')
             pre.contentEditable = true
             pre.onblur = () => {
                 hljs.highlightBlock(pre)

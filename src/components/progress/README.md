@@ -1,7 +1,7 @@
 # Progress
 
 > Use our custom progress component for displaying simple or complex progress
-bars, featuring support for horzontally stacked bars, animated backgrounds, and text labels.
+bars, featuring support for horizontally stacked bars, animated backgrounds, and text labels.
 
 ```html
 <template>
@@ -226,8 +226,9 @@ export default {
       this.bars.forEach(bar => bar.value = 25 + (Math.random() * 75))
     }, 2000)
   },
-  destroyed () {
+  beforeDestroy () {
     clearInterval(this.timer)
+    this.timer = null
   }
 }
 </script>

@@ -176,7 +176,7 @@ move focus to close the popover.
         <b-btn v-b-popover.focus="'Popover!'" variant="outline-success">Focus</b-btn>
       </b-col>
       <b-col md="6" class="py-3">
-        <b-btn v-b-popover.click.focus="'Popover!'" variant="outline-success">Hover + Focus</b-btn>
+        <b-btn v-b-popover.hover.focus="'Popover!'" variant="outline-success">Hover + Focus</b-btn>
       </b-col>
     </b-row>
   </b-container>
@@ -225,11 +225,11 @@ a focus change via pressing the <kbd>TAB</kbd> key). Some call this behavior _se
 
 
 ## Heading and content
-There are seveal options for provising the title and content of a popover.
+There are several options for provising the title and content of a popover.
 
-By dfault, popover will ue the `title` attribute of the element as the popover heading,
+By default, popover will ue the `title` attribute of the element as the popover heading,
 and the content is passed as a string to the `v-b-popover` directive.
-The title and content can also be passed as an object to `v-b-popoveer` in the form of
+The title and content can also be passed as an object to `v-b-popover` in the form of
 ```js
 {
    title: 'This is the title',
@@ -237,7 +237,7 @@ The title and content can also be passed as an object to `v-b-popoveer` in the f
 }
 ```
 If your content has basic HTML markup, then you will also need to set the `html`
-property to true, or use the diretive modifier `html`
+property to true, or use the directive modifier `html`
 ```js
 // Object format with HTML:
 {
@@ -334,6 +334,7 @@ Where `[mod]` can be (all optional):
  - `html` to enable rendering raw HTML. by default HTML is escaped and converted to text.
  - A delay value in the format of `d###` (where `###` is in ms, defaults to 0).
  - An offset value in pixels in the format of `o###` (where `###` is the number of pixels, defaults to 0. Negative values are allowed). Note if an offset is supplied, then the alignment positions will fallback to one of `top`, `bottom`, `left`, or `right`.
+ - A boundary setting of `window` or `viewport`.  The element to constrain the visual placement of the popover. If not specified, the boundary defaults to the trigger element's scroll parent (in most cases this will suffice).
 
 Where `[container]` can be (optional):
  - An element ID (minus the #) to place the popover markup in when visible
@@ -342,7 +343,7 @@ Where `[container]` can be (optional):
 ### Usage
 **Simplest usage:**
 ```
-v-b-popover="'This is a Poopover!'"
+v-b-popover="'This is a Popover!'"
 ```
 or use the element's `title` attribute for the popover header:
 ```
@@ -377,15 +378,66 @@ v-b-popover.bottom.hover  => Same as above
 v-b-popover.bottom.click.html  => Show on click and place at bottom with HTML content
 ```
 
-## Closing all opened popovers
-You can close all open popovers by emitting the `bv::hide::popover` event on $root:
+## Hiding and showing popovers via $root events
+You can close (hide) **all open popovers** by emitting the `bv::hide::popover` event on $root:
 
 ```js
 this.$root.$emit('bv::hide::popover');
 ```
 
+To close a **specific popover**, pass the trigger element's `id` as the first argument:
+
+```js
+this.$root.$emit('bv::show::popover', 'my-trigger-button-id');
+```
+
+To open (show) a **specific popover**, pass the trigger element's `id` as the first argument when
+emitting the `bv::show::popover` event:
+
+```js
+this.$root.$emit('bv::show::popover', 'my-trigger-button-id');
+```
+
+To open all popovers simultaneously, omit the `id` argument when emitting the
+`bv::show::popover` event.
+
+These events work for both the component **and** directive versions of popover.
+
+Note the **trigger element** must exist in the DOM and be in a visible state in order for the
+popover to instantiate and show.
+
+
+## Disabling and enabling popovers via $root events
+You can disable **all** popovers by emitting the `bv::disable::popover` event on $root:
+
+```js
+this.$root.$emit('bv::disable::popover');
+```
+
+To disable a **specific popover**, pass the trigger element's `id` as the first argument:
+
+```js
+this.$root.$emit('bv::disable::popover', 'my-trigger-button-id');
+```
+
+To enable a **specific popover**, pass the trigger element's `id` as the first argument when
+emitting the `bv::enable::popover` event:
+
+```js
+this.$root.$emit('bv::enable::popover', 'my-trigger-button-id');
+```
+
+To enable all popovers simultaneously, omit the `id` argument when emitting the
+`bv::enable::popover` event.
+
+These events work for both the component and directive versions of popover.
+
+Note the **trigger element** must exist in the DOM in order for the popover to be
+enabled or disabled.
+
+
 ## See also
-- [`v-b-tooltip` directive](/docs/diretives/tooltip)
+- [`v-b-tooltip` directive](/docs/directives/tooltip)
 - [`<b-popover>` component](/docs/components/popover)
 - [`<b-tooltip>` component](/docs/components/tooltip)
 

@@ -1,43 +1,53 @@
-import { idMixin, formMixin, formOptionsMixin, formSizeMixin, formStateMixin, formCustomMixin } from '../../mixins'
+import idMixin from '../../mixins/id'
+import formOptionsMixin from '../../mixins/form-options'
+import formMixin from '../../mixins/form'
+import formSizeMixin from '../../mixins/form-size'
+import formStateMixin from '../../mixins/form-state'
+import formCustomMixin from '../../mixins/form-custom'
 import bFormRadio from './form-radio'
 
 export default {
-  mixins: [idMixin, formMixin, formSizeMixin, formStateMixin, formCustomMixin, formOptionsMixin],
+  mixins: [
+    idMixin,
+    formMixin,
+    formSizeMixin,
+    formStateMixin,
+    formCustomMixin,
+    formOptionsMixin
+  ],
   components: { bFormRadio },
   render (h) {
-    const t = this
-    const $slots = t.$slots
+    const $slots = this.$slots
 
-    const radios = t.formOptions.map((option, idx) => {
+    const radios = this.formOptions.map((option, idx) => {
       return h(
         'b-form-radio',
         {
           key: `radio_${idx}_opt`,
           props: {
-            id: t.safeId(`_BV_radio_${idx}_opt_`),
-            name: t.name,
+            id: this.safeId(`_BV_radio_${idx}_opt_`),
+            name: this.name,
             value: option.value,
-            required: Boolean(t.name && t.required),
+            required: Boolean(this.name && this.required),
             disabled: option.disabled
           }
         },
-        [ h('span', { domProps: { innerHTML: option.text } }) ]
+        [h('span', { domProps: { innerHTML: option.text } })]
       )
     })
     return h(
       'div',
       {
-        class: t.groupClasses,
+        class: this.groupClasses,
         attrs: {
-          id: t.safeId(),
+          id: this.safeId(),
           role: 'radiogroup',
           tabindex: '-1',
-          'data-toggle': t.buttons ? 'buttons' : null, // Needed for styling only!
-          'aria-required': t.required ? 'true' : null,
-          'aria-invalid': t.computedAriaInvalid
+          'aria-required': this.required ? 'true' : null,
+          'aria-invalid': this.computedAriaInvalid
         }
       },
-      [ $slots.first, radios, $slots.default ]
+      [$slots.first, radios, $slots.default]
     )
   },
   data () {
@@ -92,6 +102,7 @@ export default {
     groupClasses () {
       if (this.buttons) {
         return [
+          'btn-group-toggle',
           this.stacked ? 'btn-group-vertical' : 'btn-group',
           this.size ? `btn-group-${this.size}` : '',
           this.validated ? `was-validated` : ''
@@ -99,12 +110,16 @@ export default {
       }
       return [
         this.sizeFormClass,
-        (this.stacked && this.custom) ? 'custom-controls-stacked' : '',
+        this.stacked && this.custom ? 'custom-controls-stacked' : '',
         this.validated ? `was-validated` : ''
       ]
     },
     computedAriaInvalid () {
-      if (this.ariaInvalid === true || this.ariaInvalid === 'true' || this.ariaInvalid === '') {
+      if (
+        this.ariaInvalid === true ||
+        this.ariaInvalid === 'true' ||
+        this.ariaInvalid === ''
+      ) {
         return 'true'
       }
       return this.get_State === false ? 'true' : null

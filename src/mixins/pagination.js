@@ -3,7 +3,7 @@
  */
 
 import range from '../utils/range'
-import { KeyCodes } from '../utils'
+import KeyCodes from '../utils/key-codes'
 import { isVisible, isDisabled, selectAll, getAttr } from '../utils/dom'
 import bLink from '../components/link/link'
 
@@ -104,55 +104,66 @@ export default {
   },
   props,
   render (h) {
-    const t = this
     const buttons = []
 
     // Factory function for prev/next/first/last buttons
     const makeEndBtns = (linkTo, ariaLabel, btnText, pageTest) => {
       let button
       pageTest = pageTest || linkTo // Page # to test against to disable
-      if (t.disabled || t.isActive(pageTest)) {
+      if (this.disabled || this.isActive(pageTest)) {
         button = h(
           'li',
           {
-            class: [ 'page-item', 'disabled' ],
+            class: ['page-item', 'disabled'],
             attrs: { role: 'none presentation', 'aria-hidden': 'true' }
           },
-          [ h('span', { class: ['page-link'], domProps: { innerHTML: btnText } }) ]
+          [
+            h('span', {
+              class: ['page-link'],
+              domProps: { innerHTML: btnText }
+            })
+          ]
         )
       } else {
         button = h(
           'li',
           {
-            class: [ 'page-item' ],
+            class: ['page-item'],
             attrs: { role: 'none presentation' }
           },
-          [ h(
-            'b-link',
-            {
-              class: ['page-link'],
-              props: t.linkProps(linkTo),
-              attrs: {
-                role: 'menuitem',
-                tabindex: '-1',
-                'aria-label': ariaLabel,
-                'aria-controls': t.ariaControls || null
-              },
-              on: {
-                click: (evt) => {
-                  t.onClick(linkTo, evt)
+          [
+            h(
+              'b-link',
+              {
+                class: ['page-link'],
+                props: this.linkProps(linkTo),
+                attrs: {
+                  role: 'menuitem',
+                  tabindex: '-1',
+                  'aria-label': ariaLabel,
+                  'aria-controls': this.ariaControls || null
                 },
-                keydown: (evt) => {
-                  // Links don't normally respond to SPACE, so we add that functionality
-                  if (evt.keyCode === KeyCodes.SPACE) {
-                    evt.preventDefault()
-                    t.onClick(linkTo, evt)
+                on: {
+                  click: evt => {
+                    this.onClick(linkTo, evt)
+                  },
+                  keydown: evt => {
+                    // Links don't normally respond to SPACE, so we add that functionality
+                    if (evt.keyCode === KeyCodes.SPACE) {
+                      evt.preventDefault()
+                      this.onClick(linkTo, evt)
+                    }
                   }
                 }
-              }
-            },
-            [ h('span', { attrs: { 'aria-hidden': 'true' }, domProps: { innerHTML: btnText } }) ]
-          ) ]
+              },
+              [
+                h('span', {
+                  attrs: { 'aria-hidden': 'true' },
+                  domProps: { innerHTML: btnText }
+                })
+              ]
+            )
+          ]
         )
       }
       return button
@@ -163,99 +174,122 @@ export default {
       return h(
         'li',
         {
-          class: [ 'page-item', 'disabled', 'd-none', 'd-sm-flex' ],
+          class: ['page-item', 'disabled', 'd-none', 'd-sm-flex'],
           attrs: { role: 'separator' }
         },
-        [ h('span', { class: ['page-link'], domProps: { innerHTML: t.ellipsisText } }) ]
+        [
+          h('span', {
+            class: ['page-link'],
+            domProps: { innerHTML: this.ellipsisText }
+          })
+        ]
       )
     }
 
     // Goto First Page button
-    buttons.push(t.hideGotoEndButtons ? h(false) : makeEndBtns(1, t.labelFirstPage, t.firstText))
+    buttons.push(
+      this.hideGotoEndButtons
+        ? h(false)
+        : makeEndBtns(1, this.labelFirstPage, this.firstText)
+    )
 
     // Goto Previous page button
-    buttons.push(makeEndBtns(t.currentPage - 1, t.labelPrevPage, t.prevText, 1))
+    buttons.push(makeEndBtns(this.currentPage - 1, this.labelPrevPage, this.prevText, 1))
 
     // First Ellipsis Bookend
-    buttons.push(t.showFirstDots ? makeEllipsis() : h(false))
+    buttons.push(this.showFirstDots ? makeEllipsis() : h(false))
 
     // Individual Page links
-    t.pageList.forEach((page) => {
+    this.pageList.forEach(page => {
       let inner
-      let pageNum = t.makePage(page.number)
-      if (t.disabled) {
-        inner = h('span', { class: [ 'page-link' ], domProps: { innerHTML: pageNum } })
+      let pageNum = this.makePage(page.number)
+      if (this.disabled) {
+        inner = h('span', {
+          class: ['page-link'],
+          domProps: { innerHTML: pageNum }
+        })
       } else {
-        inner = h(
-          'b-link',
-          {
-            class: t.pageLinkClasses(page),
-            props: t.linkProps(page.number),
-            attrs: {
-              role: 'menuitemradio',
-              tabindex: t.isActive(page.number) ? '0' : '-1',
-              'aria-controls': t.ariaControls || null,
-              'aria-label': `${t.labelPage} ${page.number}`,
-              'aria-checked': t.isActive(page.number) ? 'true' : 'false',
-              'aria-posinset': page.number,
-              'aria-setsize': t.numberOfPages
+        const active = this.isActive(page.number)
+        inner = h('b-link', {
+          class: this.pageLinkClasses(page),
+          props: this.linkProps(page.number),
+          attrs: {
+            role: 'menuitemradio',
+            tabindex: active ? '0' : '-1',
+            'aria-controls': this.ariaControls || null,
+            'aria-label': `${this.labelPage} ${page.number}`,
+            'aria-checked': active ? 'true' : 'false',
+            'aria-posinset': page.number,
+            'aria-setsize': this.numberOfPages
+          },
+          domProps: { innerHTML: pageNum },
+          on: {
+            click: evt => {
+              this.onClick(page.number, evt)
             },
-            domProps: { innerHTML: pageNum },
-            on: {
-              click: (evt) => {
-                t.onClick(page.number, evt)
-              },
-              keydown: (evt) => {
-                if (evt.keyCode === KeyCodes.SPACE) {
-                  evt.preventDefault()
-                  t.onClick(page.number, evt)
-                }
+            keydown: evt => {
+              if (evt.keyCode === KeyCodes.SPACE) {
+                evt.preventDefault()
+                this.onClick(page.number, evt)
               }
             }
           }
-        )
+        })
       }
-      buttons.push(h(
-        'li',
-        {
-          key: page.number,
-          class: t.pageItemClasses(page),
-          attrs: { role: 'none presentation' }
-        },
-        [ inner ]
-      ))
+      buttons.push(
+        h(
+          'li',
+          {
+            key: page.number,
+            class: this.pageItemClasses(page),
+            attrs: { role: 'none presentation' }
+          },
+          [inner]
+        )
+      )
     })
 
     // Last Ellipsis Bookend
-    buttons.push(t.showLastDots ? makeEllipsis() : h(false))
+    buttons.push(this.showLastDots ? makeEllipsis() : h(false))
 
     // Goto Next page button
-    buttons.push(makeEndBtns(t.currentPage + 1, t.labelNextPage, t.nextText, t.numberOfPages))
+    buttons.push(
+      makeEndBtns(
+        this.currentPage + 1,
+        this.labelNextPage,
+        this.nextText,
+        this.numberOfPages
+      )
+    )
 
     // Goto Last Page button
-    buttons.push(t.hideGotoEndButtons ? h(false) : makeEndBtns(t.numberOfPages, t.labelLastPage, t.lastText))
+    buttons.push(
+      this.hideGotoEndButtons
+        ? h(false)
+        : makeEndBtns(this.numberOfPages, this.labelLastPage, this.lastText)
+    )
 
     // Assemble the paginatiom buttons
     const pagination = h(
       'ul',
       {
         ref: 'ul',
-        class: [ 'pagination', 'b-pagination', t.btnSize, t.alignment ],
+        class: ['pagination', 'b-pagination', this.btnSize, this.alignment],
         attrs: {
           role: 'menubar',
-          'aria-disabled': t.disabled ? 'true' : 'false',
-          'aria-label': t.ariaLabel || null
+          'aria-disabled': this.disabled ? 'true' : 'false',
+          'aria-label': this.ariaLabel || null
         },
         on: {
-          keydown: (evt) => {
+          keydown: evt => {
             const keyCode = evt.keyCode
             const shift = evt.shiftKey
             if (keyCode === KeyCodes.LEFT) {
               evt.preventDefault()
-              shift ? t.focusFirst() : t.focusPrev()
+              shift ? this.focusFirst() : this.focusPrev()
             } else if (keyCode === KeyCodes.RIGHT) {
               evt.preventDefault()
-              shift ? t.focusLast() : t.focusNext()
+              shift ? this.focusLast() : this.focusNext()
             }
           }
         }
@@ -264,7 +298,7 @@ export default {
     )
 
     // if we are pagination-nav, wrap in '<nav>' wrapper
-    return t.isNav ? h('nav', {}, [ pagination ]) : pagination
+    return this.isNav ? h('nav', {}, [pagination]) : pagination
   },
   watch: {
     currentPage (newPage, oldPage) {
@@ -306,13 +340,19 @@ export default {
       if (this.numberOfPages <= this.limit) {
         // Special Case: Less pages available than the limit of displayed pages
         numLinks = this.numberOfPages
-      } else if (this.currentPage < (this.limit - 1) && this.limit > ELLIPSIS_THRESHOLD) {
+      } else if (
+        this.currentPage < this.limit - 1 &&
+        this.limit > ELLIPSIS_THRESHOLD
+      ) {
         // We are near the beginning of the page list
         if (!this.hideEllipsis) {
           numLinks = this.limit - 1
           this.showLastDots = true
         }
-      } else if ((this.numberOfPages - this.currentPage + 2) < this.limit && this.limit > ELLIPSIS_THRESHOLD) {
+      } else if (
+        this.numberOfPages - this.currentPage + 2 < this.limit &&
+        this.limit > ELLIPSIS_THRESHOLD
+      ) {
         // We are near the end of the list
         if (!this.hideEllipsis) {
           this.showFirstDots = true
@@ -331,7 +371,7 @@ export default {
       // Sanity checks
       if (startNum < 1) {
         startNum = 1
-      } else if (startNum > (this.numberOfPages - numLinks)) {
+      } else if (startNum > this.numberOfPages - numLinks) {
         startNum = this.numberOfPages - numLinks + 1
       }
       // Generate list of page numbers
@@ -380,7 +420,9 @@ export default {
       return [
         'page-link',
         this.disabled ? 'disabled' : '',
-        this.isActive(page.number) ? 'active' : ''
+        // Interim workaround to get better focus styling of active button
+        // See https://github.com/twbs/bootstrap/issues/24838
+        this.isActive(page.number) ? 'btn-primary' : ''
       ]
     },
     getButtons () {
@@ -393,7 +435,9 @@ export default {
       })
     },
     focusCurrent () {
-      const btn = this.getButtons().find(el => parseInt(getAttr(el, 'aria-posinset'), 10) === this.currentPage)
+      const btn = this.getButtons().find(
+        el => parseInt(getAttr(el, 'aria-posinset'), 10) === this.currentPage
+      )
       if (btn && btn.focus) {
         this.setBtnFocus(btn)
       } else {
@@ -408,7 +452,9 @@ export default {
       }
     },
     focusLast () {
-      const btn = this.getButtons().reverse().find(el => !isDisabled(el))
+      const btn = this.getButtons()
+        .reverse()
+        .find(el => !isDisabled(el))
       if (btn && btn.focus && btn !== document.activeElement) {
         this.setBtnFocus(btn)
       }
@@ -424,7 +470,11 @@ export default {
       const buttons = this.getButtons()
       const idx = buttons.indexOf(document.activeElement)
       const cnt = buttons.length - 1
-      if (idx < cnt && !isDisabled(buttons[idx + 1]) && buttons[idx + 1].focus) {
+      if (
+        idx < cnt &&
+        !isDisabled(buttons[idx + 1]) &&
+        buttons[idx + 1].focus
+      ) {
         this.setBtnFocus(buttons[idx + 1])
       }
     }

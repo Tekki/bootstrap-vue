@@ -1,8 +1,8 @@
 import Popper from 'popper.js'
+import BvEvent from './bv-event.class'
 import { assign } from './object'
 import { from as arrayFrom } from './array'
 import { closest, select, isVisible, isDisabled, getCS, addClass, removeClass, hasClass, setAttr, removeAttr, getAttr, eventOn, eventOff } from './dom'
-import BvEvent from './bv-event.class'
 
 const NAME = 'tooltip'
 const CLASS_PREFIX = 'bs-tooltip'
@@ -10,9 +10,10 @@ const BSCLS_PREFIX_REGEX = new RegExp(`\\b${CLASS_PREFIX}\\S+`, 'g')
 
 const TRANSITION_DURATION = 150
 
-// Modal $root event (prepare for future evnt name change)
+// Modal $root hidden event
 const MODAL_CLOSE_EVENT = 'bv::modal::hidden'
-const MODAL_CLASS = '.modal'
+// Modal container for appending tip/popover
+const MODAL_CLASS = '.modal-content'
 
 const AttachmentMap = {
   AUTO: 'auto',
@@ -86,7 +87,8 @@ const Defaults = {
   arrowPadding: 6,
   container: false,
   fallbackPlacement: 'flip',
-  callbacks: {}
+  callbacks: {},
+  boundary: 'scrollParent'
 }
 
 // Transition Event names
@@ -101,6 +103,7 @@ const TransitionEndEvents = {
 // Could use Alex's uid generator util
 // Each tooltip requires a unique client side ID
 let NEXTID = 1
+/* istanbul ignore next */
 function generateId (name) {
   return `__BV_${name}_${NEXTID++}__`
 }
@@ -108,10 +111,12 @@ function generateId (name) {
 /*
  * ToolTip Class definition
  */
+/* istanbul ignore next: difficult to test in Jest/JSDOM environment */
 class ToolTip {
   // Main constructor
   constructor (element, config, $root) {
     // New tooltip object
+    this.$isEnabled = true
     this.$fadeTimeout = null
     this.$hoverTimeout = null
     this.$visibleInterval = null
@@ -123,8 +128,12 @@ class ToolTip {
     this.$id = generateId(this.constructor.NAME)
     this.$root = $root || null
     this.$routeWatcher = null
-    // We keep a bound copy of the foreHide method for root/modal listeners
+    // We use a bound version of the following handlers for root/modal listeners to maintain the 'this' context
     this.$forceHide = this.forceHide.bind(this)
+    this.$doHide = this.doHide.bind(this)
+    this.$doShow = this.doShow.bind(this)
+    this.$doDisable = this.doDisable.bind(this)
+    this.$doEnable = this.doEnable.bind(this)
     // Set the configuration
     this.updateConfig(config)
   }
@@ -177,7 +186,7 @@ class ToolTip {
     this.unListen()
     // Disable while open listeners/watchers
     this.setWhileOpenListeners(false)
-    // Clear any timouts
+    // Clear any timeouts
     clearTimeout(this.$hoverTimeout)
     this.$hoverTimeout = null
     clearTimeout(this.$fadeTimeout)
@@ -194,16 +203,46 @@ class ToolTip {
     this.$tip = null
     // Null out other properties
     this.$id = null
+    this.$isEnabled = null
     this.$root = null
     this.$element = null
     this.$config = null
     this.$hoverState = null
     this.$activeTrigger = null
     this.$forceHide = null
+    this.$doHide = null
+    this.$doShow = null
+    this.$doDisable = null
+    this.$doEnable = null
+  }
+
+  enable () {
+    // Create a non-cancelable BvEvent
+    const enabledEvt = new BvEvent('enabled', {
+      cancelable: false,
+      target: this.$element,
+      relatedTarget: null
+    })
+    this.$isEnabled = true
+    this.emitEvent(enabledEvt)
+  }
+
+  disable () {
+    // Create a non-cancelable BvEvent
+    const disabledEvt = new BvEvent('disabled', {
+      cancelable: false,
+      target: this.$element,
+      relatedTarget: null
+    })
+    this.$isEnabled = false
+    this.emitEvent(disabledEvt)
   }
 
   // Click toggler
   toggle (event) {
+    if (!this.$isEnabled) {
+      return
+    }
     if (event) {
       this.$activeTrigger.click = !this.$activeTrigger.click
 
@@ -223,17 +262,16 @@ class ToolTip {
 
   // Show tooltip
   show () {
-    if (!document.body.contains(this.$element)) {
-      // If trigger element isn't in the DOM
+    if (!document.body.contains(this.$element) || !isVisible(this.$element)) {
+      // If trigger element isn't in the DOM or is not visible
       return
     }
-
     // Build tooltip element (also sets this.$tip)
     const tip = this.getTipElement()
     this.fixTitle()
     this.setContent(tip)
     if (!this.isWithContent(tip)) {
-      // if No content, dont bother showing
+      // if No content, don't bother showing
       this.$tip = null
       return
     }
@@ -328,8 +366,6 @@ class ToolTip {
     this.visibleCheck(on)
     // Route change events
     this.setRouteWatcher(on)
-    // Global hide events
-    this.setRootListener(on)
     // Ontouch start listeners
     this.setOnTouchStartListener(on)
     if (on && /(focus|blur)/.test(this.$config.trigger)) {
@@ -376,6 +412,7 @@ class ToolTip {
     }
 
     // Transitionend Callback
+    /* istanbul ignore next */
     const complete = () => {
       if (this.$hoverState !== HoverState.SHOW && tip.parentNode) {
         // Remove tip from dom, and force recompile on next show
@@ -461,6 +498,7 @@ class ToolTip {
     this.$popper = null
   }
 
+  /* istanbul ignore next */
   transitionOnce (tip, complete) {
     const transEvents = this.getTransitionEndEvents()
     let called = false
@@ -600,6 +638,9 @@ class ToolTip {
     const triggers = this.$config.trigger.trim().split(/\s+/)
     const el = this.$element
 
+    // Listen for global show/hide events
+    this.setRootListener(true)
+
     // Using 'this' as the handler will get automagically directed to this.handleEvent
     // And maintain our binding to 'this'
     triggers.forEach(trigger => {
@@ -624,6 +665,9 @@ class ToolTip {
     events.forEach(evt => {
       eventOff(this.$element, evt, this)
     }, this)
+
+    // Stop listening for global show/hide/enable/disable events
+    this.setRootListener(false)
   }
 
   handleEvent (e) {
@@ -631,6 +675,10 @@ class ToolTip {
     if (isDisabled(this.$element)) {
       // If disabled, don't do anything. Note: if tip is shown before element gets
       // disabled, then tip not close until no longer disabled or forcefully closed.
+      return
+    }
+    if (!this.$isEnabled) {
+      // If not enable
       return
     }
     const type = e.type
@@ -668,6 +716,7 @@ class ToolTip {
     }
   }
 
+  /* istanbul ignore next */
   setRouteWatcher (on) {
     if (on) {
       this.setRouteWatcher(false)
@@ -689,6 +738,7 @@ class ToolTip {
     }
   }
 
+  /* istanbul ignore next */
   setModalListener (on) {
     const modal = closest(MODAL_CLASS, this.$element)
     if (!modal) {
@@ -701,13 +751,62 @@ class ToolTip {
     }
   }
 
+  /* istanbul ignore next */
   setRootListener (on) {
-    // We can listen for global 'bv::hide::popover/tooltip' hide request event
+    // Listen for global 'bv::{hide|show}::{tooltip|popover}' hide request event
     if (this.$root) {
-      this.$root[on ? '$on' : '$off'](`bv::hide::${this.constructor.NAME}`, this.$forceHide)
+      this.$root[on ? '$on' : '$off'](`bv::hide::${this.constructor.NAME}`, this.$doHide)
+      this.$root[on ? '$on' : '$off'](`bv::show::${this.constructor.NAME}`, this.$doShow)
+      this.$root[on ? '$on' : '$off'](`bv::disable::${this.constructor.NAME}`, this.$doDisable)
+      this.$root[on ? '$on' : '$off'](`bv::enable::${this.constructor.NAME}`, this.$doEnable)
     }
   }
 
+  doHide (id) {
+    // Programmatically hide tooltip or popover
+    if (!id) {
+      // Close all tooltips or popovers
+      this.forceHide()
+    } else if (this.$element && this.$element.id && this.$element.id === id) {
+      // Close this specific tooltip or popover
+      this.hide()
+    }
+  }
+
+  doShow (id) {
+    // Programmatically show tooltip or popover
+    if (!id) {
+      // Open all tooltips or popovers
+      this.show()
+    } else if (id && this.$element && this.$element.id && this.$element.id === id) {
+      // Show this specific tooltip or popover
+      this.show()
+    }
+  }
+
+  doDisable (id) {
+    // Programmatically disable tooltip or popover
+    if (!id) {
+      // Disable all tooltips or popovers
+      this.disable()
+    } else if (this.$element && this.$element.id && this.$element.id === id) {
+      // Disable this specific tooltip or popover
+      this.disable()
+    }
+  }
+
+  doEnable (id) {
+    // Programmatically enable tooltip or popover
+    if (!id) {
+      // Enable all tooltips or popovers
+      this.enable()
+    } else if (this.$element && this.$element.id && this.$element.id === id) {
+      // Enable this specific tooltip or popover
+      this.enable()
+    }
+  }
+
+  /* istanbul ignore next */
   setOnTouchStartListener (on) {
     // if this is a touch-enabled device we add extra
     // empty mouseover listeners to the body's immediate children;
@@ -724,6 +823,7 @@ class ToolTip {
     }
   }
 
+  /* istanbul ignore next */
   _noop () {
     // Empty noop handler for ontouchstart devices
   }
@@ -738,6 +838,7 @@ class ToolTip {
   }
 
   // Enter handler
+  /* istanbul ignore next */
   enter (e) {
     if (e) {
       this.$activeTrigger[e.type === 'focusin' ? 'focus' : 'hover'] = true
@@ -760,6 +861,7 @@ class ToolTip {
   }
 
   // Leave handler
+  /* istanbul ignore next */
   leave (e) {
     if (e) {
       this.$activeTrigger[e.type === 'focusout' ? 'focus' : 'hover'] = false
@@ -791,7 +893,8 @@ class ToolTip {
       modifiers: {
         offset: { offset: this.getOffset(placement, tip) },
         flip: { behavior: this.$config.fallbackPlacement },
-        arrow: { element: '.arrow' }
+        arrow: { element: '.arrow' },
+        preventOverflow: { boundariesElement: this.$config.boundary }
       },
       onCreate: data => {
         // Handle flipping arrow classes
@@ -819,7 +922,7 @@ class ToolTip {
           return 0
       }
     }
-    return parseFloat(this.$config.offset)
+    return this.$config.offset
   }
 
   getPlacement () {

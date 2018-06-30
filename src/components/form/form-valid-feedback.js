@@ -1,4 +1,4 @@
-import { mergeData } from '../../utils'
+import { mergeData } from 'vue-functional-data-merge'
 
 export const props = {
   id: {
@@ -8,6 +8,10 @@ export const props = {
   tag: {
     type: String,
     default: 'div'
+  },
+  forceShow: {
+    type: Boolean,
+    default: false
   }
 }
 
@@ -19,9 +23,8 @@ export default {
       props.tag,
       mergeData(data, {
         staticClass: 'valid-feedback',
-        attrs: {
-          id: props.id
-        }
+        class: { 'd-block': props.forceShow },
+        attrs: { id: props.id }
       }),
       children
     )

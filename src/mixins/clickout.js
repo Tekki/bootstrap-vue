@@ -4,9 +4,9 @@ export default {
       document.documentElement.addEventListener('click', this._clickOutListener)
     }
   },
-  destroyed () {
+  beforeDestroy () {
     if (typeof document !== 'undefined') {
-      document.removeEventListener('click', this._clickOutListener)
+      document.documentElement.removeEventListener('click', this._clickOutListener)
     }
   },
   methods: {

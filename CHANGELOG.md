@@ -2,6 +2,355 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.11"></a>
+# [2.0.0-rc.11](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2018-05-20)
+
+
+### Bug Fixes
+
+* **form-input:** force update formatted value ([#1845](https://github.com/bootstrap-vue/bootstrap-vue/issues/1845)) ([497cc6e](https://github.com/bootstrap-vue/bootstrap-vue/commit/497cc6e))
+
+
+
+<a name="2.0.0-rc.10"></a>
+# [2.0.0-rc.10](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2018-05-17)
+
+
+### Bug Fixes
+
+* **docs:** Fix duplicate keys in events table ([#1786](https://github.com/bootstrap-vue/bootstrap-vue/issues/1786)) ([fa60d56](https://github.com/bootstrap-vue/bootstrap-vue/commit/fa60d56))
+* **docs:** incorrect closing <b-form-file> tag ([#1838](https://github.com/bootstrap-vue/bootstrap-vue/issues/1838)) ([69e410d](https://github.com/bootstrap-vue/bootstrap-vue/commit/69e410d))
+* **docs:** Remove incorrect code added during debugging ([#1787](https://github.com/bootstrap-vue/bootstrap-vue/issues/1787)) ([9911507](https://github.com/bootstrap-vue/bootstrap-vue/commit/9911507))
+* **form-input:** always return formatted value ([#1839](https://github.com/bootstrap-vue/bootstrap-vue/issues/1839)) ([77cc97b](https://github.com/bootstrap-vue/bootstrap-vue/commit/77cc97b))
+* **tab:** fix the delay in tab transition ([#1812](https://github.com/bootstrap-vue/bootstrap-vue/issues/1812)) ([#1806](https://github.com/bootstrap-vue/bootstrap-vue/issues/1806)) ([5a7a290](https://github.com/bootstrap-vue/bootstrap-vue/commit/5a7a290))
+* **table:** fix aria-rowcount ([#1836](https://github.com/bootstrap-vue/bootstrap-vue/issues/1836)) ([e3e5439](https://github.com/bootstrap-vue/bootstrap-vue/commit/e3e5439))
+
+
+### Features
+
+* **alert:** Add fade prop ([#1785](https://github.com/bootstrap-vue/bootstrap-vue/issues/1785)) ([0999b4c](https://github.com/bootstrap-vue/bootstrap-vue/commit/0999b4c))
+* **breadcrumb-link:** support children elements ([#1832](https://github.com/bootstrap-vue/bootstrap-vue/issues/1832)) ([#1833](https://github.com/bootstrap-vue/bootstrap-vue/issues/1833)) ([42175f8](https://github.com/bootstrap-vue/bootstrap-vue/commit/42175f8))
+* **dropdown:** make show/hide events cancelable . also adds toggle event ([#1807](https://github.com/bootstrap-vue/bootstrap-vue/issues/1807)) ([4136bd9](https://github.com/bootstrap-vue/bootstrap-vue/commit/4136bd9))
+* **table:** Add no-sort-reset prop ([#1784](https://github.com/bootstrap-vue/bootstrap-vue/issues/1784)) ([26aaeab](https://github.com/bootstrap-vue/bootstrap-vue/commit/26aaeab))
+* **table:** Add the sort-direction prop ([#1783](https://github.com/bootstrap-vue/bootstrap-vue/issues/1783)) ([#1788](https://github.com/bootstrap-vue/bootstrap-vue/issues/1788)) ([9e1959d](https://github.com/bootstrap-vue/bootstrap-vue/commit/9e1959d))
+
+
+
+<a name="2.0.0-rc.9"></a>
+# [2.0.0-rc.9](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2018-04-27)
+
+
+### Bug Fixes
+
+* **docs:** typo in docs plugin ([#1777](https://github.com/bootstrap-vue/bootstrap-vue/issues/1777)) ([fb50c6f](https://github.com/bootstrap-vue/bootstrap-vue/commit/fb50c6f))
+* **dropdown:** aria-labbeledby for dropdowns ([8efa7ee](https://github.com/bootstrap-vue/bootstrap-vue/commit/8efa7ee))
+* **form-input:** revert step, min and max props ([#1767](https://github.com/bootstrap-vue/bootstrap-vue/issues/1767)) ([1ce1a20](https://github.com/bootstrap-vue/bootstrap-vue/commit/1ce1a20))
+* **img-lazy:** typo ([#1778](https://github.com/bootstrap-vue/bootstrap-vue/issues/1778)) ([11d113c](https://github.com/bootstrap-vue/bootstrap-vue/commit/11d113c))
+* **tooltip:** typo in comment ([#1779](https://github.com/bootstrap-vue/bootstrap-vue/issues/1779)) ([ef253f7](https://github.com/bootstrap-vue/bootstrap-vue/commit/ef253f7))
+
+
+### Features
+
+* **table:** support custom attributes per table cell in a column ([#1760](https://github.com/bootstrap-vue/bootstrap-vue/issues/1760)) ([fc083e5](https://github.com/bootstrap-vue/bootstrap-vue/commit/fc083e5))
+
+
+
+<a name="2.0.0-rc.8"></a>
+# [2.0.0-rc.8](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2018-04-17)
+
+
+### Bug Fixes
+
+* **docs:** fix table refresh event name ([#1692](https://github.com/bootstrap-vue/bootstrap-vue/issues/1692)) ([01e223c](https://github.com/bootstrap-vue/bootstrap-vue/commit/01e223c))
+* default export in TypeScript definitions ([cd7e310](https://github.com/bootstrap-vue/bootstrap-vue/commit/cd7e310))
+
+
+
+<a name="2.0.0-rc.7"></a>
+# [2.0.0-rc.7](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2018-04-16)
+
+
+### Bug Fixes
+
+* **table:** typo in README.md ([#1729](https://github.com/bootstrap-vue/bootstrap-vue/issues/1729)) ([8d0e186](https://github.com/bootstrap-vue/bootstrap-vue/commit/8d0e186))
+* **tabs:** change default key nav to avoid breaking changes ([#1733](https://github.com/bootstrap-vue/bootstrap-vue/issues/1733)) ([a6dea02](https://github.com/bootstrap-vue/bootstrap-vue/commit/a6dea02))
+* **tabs:** rename prop to no-key-nav, update docs ([491d698](https://github.com/bootstrap-vue/bootstrap-vue/commit/491d698))
+* **tabs:** typo in tabs ([#1735](https://github.com/bootstrap-vue/bootstrap-vue/issues/1735)) ([89eff3c](https://github.com/bootstrap-vue/bootstrap-vue/commit/89eff3c))
+
+
+### Features
+
+* add basic typescript declarations ([#1721](https://github.com/bootstrap-vue/bootstrap-vue/issues/1721)) ([3c040f0](https://github.com/bootstrap-vue/bootstrap-vue/commit/3c040f0))
+* **form-input:** add step, min and max props for use with number type ([40ff380](https://github.com/bootstrap-vue/bootstrap-vue/commit/40ff380))
+* **table:** support custom classes per table cell in a column ([d05d6b6](https://github.com/bootstrap-vue/bootstrap-vue/commit/d05d6b6))
+* **tabs:** add key nav prop like button toolbar has ([#1733](https://github.com/bootstrap-vue/bootstrap-vue/issues/1733)) ([bc3b82b](https://github.com/bootstrap-vue/bootstrap-vue/commit/bc3b82b))
+* **tabs/noNavStyle:** added related prop and check ([91c7257](https://github.com/bootstrap-vue/bootstrap-vue/commit/91c7257))
+
+
+
+<a name="2.0.0-rc.6"></a>
+# [2.0.0-rc.6](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.4...v2.0.0-rc.6) (2018-04-02)
+
+
+### Bug Fixes
+
+* **text-area:** correctly handle input event ([#1714](https://github.com/bootstrap-vue/bootstrap-vue/issues/1714)) ([5e2973d](https://github.com/bootstrap-vue/bootstrap-vue/commit/5e2973d))
+
+
+<a name="2.0.0-rc.5"></a>
+# [2.0.0-rc.5](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2018-04-02)
+
+
+### Bug Fixes
+
+* **card:** duplicate header and footer slots with no-body ([#1713](https://github.com/bootstrap-vue/bootstrap-vue/issues/1713), [#1680](https://github.com/bootstrap-vue/bootstrap-vue/issues/1680)) ([2bd0e71](https://github.com/bootstrap-vue/bootstrap-vue/commit/2bd0e71))
+
+**NOTE** Vue `2.5.15` has known issues with card slots. Please upgrade to `2.5.16` or newer versions.
+
+<a name="2.0.0-rc.4"></a>
+# [2.0.0-rc.4](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2018-04-01)
+
+
+### Bug Fixes
+
+* **build:** don't exclude lodash.get ([543c3c2](https://github.com/bootstrap-vue/bootstrap-vue/commit/543c3c2))
+* **card:** pass children instead of default prop to sub-components ([63b35e3](https://github.com/bootstrap-vue/bootstrap-vue/commit/63b35e3))
+
+
+### Features
+
+* **test:** test against multi versions of vue ([25d0b13](https://github.com/bootstrap-vue/bootstrap-vue/commit/25d0b13))
+
+
+### Performance Improvements
+
+* **docs:** only import debounce from lodash ([a6abd6d](https://github.com/bootstrap-vue/bootstrap-vue/commit/a6abd6d))
+
+
+
+<a name="2.0.0-rc.3"></a>
+# [2.0.0-rc.3](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2018-04-01)
+
+
+### Bug Fixes
+
+* **contributing:** Improve the commit guidelines ([c506280](https://github.com/bootstrap-vue/bootstrap-vue/commit/c506280))
+* **modal:** Correct the internal btn variable names ([301f2e4](https://github.com/bootstrap-vue/bootstrap-vue/commit/301f2e4)), closes [#1650](https://github.com/bootstrap-vue/bootstrap-vue/issues/1650)
+* **select:** Fix issues with form-select ([#1673](https://github.com/bootstrap-vue/bootstrap-vue/issues/1673)) ([e3336c5](https://github.com/bootstrap-vue/bootstrap-vue/commit/e3336c5)), closes [#1658](https://github.com/bootstrap-vue/bootstrap-vue/issues/1658)
+* **table:** import lodash.get from "dependencies" ([#1697](https://github.com/bootstrap-vue/bootstrap-vue/issues/1697)) ([4d620a5](https://github.com/bootstrap-vue/bootstrap-vue/commit/4d620a5))
+
+
+### Features
+
+* **dropdown, nav-item-dropdown:** support menuClass and extraMenuClasses ([#1683](https://github.com/bootstrap-vue/bootstrap-vue/issues/1683)) ([3da5f18](https://github.com/bootstrap-vue/bootstrap-vue/commit/3da5f18))
+* **modal:** add `modalClass` property to `bModal` ([#1682](https://github.com/bootstrap-vue/bootstrap-vue/issues/1682)) ([c7a10ef](https://github.com/bootstrap-vue/bootstrap-vue/commit/c7a10ef))
+* **table:** add field to the table column data cell slots ([#1705](https://github.com/bootstrap-vue/bootstrap-vue/issues/1705)) ([e013d59](https://github.com/bootstrap-vue/bootstrap-vue/commit/e013d59))
+
+
+### Performance Improvements
+
+* **docs:** lodash dependency ([a02f10d](https://github.com/bootstrap-vue/bootstrap-vue/commit/a02f10d))
+
+
+
+<a name="2.0.0-rc.2"></a>
+# [2.0.0-rc.2](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2018-03-06)
+
+### Features
+
+* **popovers / tooltips:** Accept an HTMLElement as a valid target ([a375452](https://github.com/bootstrap-vue/bootstrap-vue/commit/a375452))
+* **tab:** add title slot ([#1586](https://github.com/bootstrap-vue/bootstrap-vue/pull/1586)) ([724b453](https://github.com/bootstrap-vue/bootstrap-vue/commit/724b453))
+* **table:** Use object's property as a key ([#1614](https://github.com/bootstrap-vue/bootstrap-vue/pull/1614)) ([4464f0a](https://github.com/bootstrap-vue/bootstrap-vue/commit/4464f0a))
+* **tooltip:** Allow a function as a tooltip target attribute ([#1493](https://github.com/bootstrap-vue/bootstrap-vue/pull/1493)) ([048c3d4](https://github.com/bootstrap-vue/bootstrap-vue/commit/048c3d4))
+
+### Bug Fixes
+
+* **modal:** fix v-b-modal directive unbinding ([#1617](https://github.com/bootstrap-vue/bootstrap-vue/pull/1617)) ([3f6a86a](https://github.com/bootstrap-vue/bootstrap-vue/commit/3f6a86a))
+* **table:** avoid HTML injection in table data ([63d8097](https://github.com/bootstrap-vue/bootstrap-vue/commit/63d8097))
+* **table:** allow empty labels ([5ee0923](https://github.com/bootstrap-vue/bootstrap-vue/commit/5ee0923))
+* **table:** Ignore BV keys when auto-discovering table fields ([#1641](https://github.com/bootstrap-vue/bootstrap-vue/pull/1641)) ([f56f3e8](https://github.com/bootstrap-vue/bootstrap-vue/commit/f56f3e8))
+* **select:** Always pass selectSize to selects ([#1640](https://github.com/bootstrap-vue/bootstrap-vue/pull/1640)) ([2c725f6](https://github.com/bootstrap-vue/bootstrap-vue/commit/2c725f6))
+* **docs:** use "prepend" and "append" for input-group ([#1593](https://github.com/bootstrap-vue/bootstrap-vue/pull/1593)) ([5b7ee09](https://github.com/bootstrap-vue/bootstrap-vue/commit/5b7ee09cb494b4c243929d8fbc28976e8330b420))
+* **docs:** fix splash button styling ([11484b3](https://github.com/bootstrap-vue/bootstrap-vue/commit/11484b3))
+* **docs:** fix typo in docs ([#1555](https://github.com/bootstrap-vue/bootstrap-vue/pull/1555)) ([c927377](https://github.com/bootstrap-vue/bootstrap-vue/commit/c927377))
+* **docs:** spelling correction in comment ([#1568](https://github.com/bootstrap-vue/bootstrap-vue/issues/1568)) ([e0e4006](https://github.com/bootstrap-vue/bootstrap-vue/commit/e0e4006))
+* polyfill HTMLElement for SSR ([d4dd9b3](https://github.com/bootstrap-vue/bootstrap-vue/commit/d4dd9b3))
+
+
+
+<a name="2.0.0-rc.1"></a>
+# [2.0.0-rc.1](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2018-01-25)
+
+
+### Bug Fixes
+
+* call `removeEventListener` on the right element ([#1557](https://github.com/bootstrap-vue/bootstrap-vue/issues/1557)) ([cf2bfca](https://github.com/bootstrap-vue/bootstrap-vue/commit/cf2bfca)), closes [#1391](https://github.com/bootstrap-vue/bootstrap-vue/issues/1391)
+* **form-group:** replace .col-form-legend with .col-form-label ([ac2d4dd](https://github.com/bootstrap-vue/bootstrap-vue/commit/ac2d4dd))
+* **input-group:** fix dropdown rounded corners. closes [#1560](https://github.com/bootstrap-vue/bootstrap-vue/issues/1560). ([7df01ff](https://github.com/bootstrap-vue/bootstrap-vue/commit/7df01ff))
+* **modal:** hide dropdown on click. ([#1528](https://github.com/bootstrap-vue/bootstrap-vue/issues/1528)) ([3ad8a9a](https://github.com/bootstrap-vue/bootstrap-vue/commit/3ad8a9a))
+
+
+### Performance Improvements
+
+* **id mixin:** make localId_ a computed field ([873b0e7](https://github.com/bootstrap-vue/bootstrap-vue/commit/873b0e7))
+
+
+
+<a name="2.0.0-rc.0"></a>
+## [2.0.0-rc.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.4.0...v2.0.0-rc.0)
+
+Released: 2018-01-23
+
+[**Full change list**](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.5.0...v2.0.0-rc.0)
+
+With `v2.0.0` release, BootstrapVue is compatible with final stable release of Bootstrap `v4.0.0` and beyond.
+
+* If you are using any custom theme which was based on BS beta, there may be minor problems to be fixed. Please ensure to review [migrate guide](https://getbootstrap.com/docs/4.0/migration).
+* With this release, we have removed majority of CSS fixes. If you are using ES builds, you may have to add a `css-loader` to make it working probably.
+* `input-group-addon` API has been changed and `left/right` changed into `prepend/append`. Please refer to the docs for more information.
+
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.4.1...v1.5.0) (2018-01-23)
+
+
+### Features
+
+* **dropdown:** add toggleClass prop ([#1485](https://github.com/bootstrap-vue/bootstrap-vue/issues/1485)) ([da16cc0](https://github.com/bootstrap-vue/bootstrap-vue/commit/da16cc0))
+* **nav-item-dropdown:** add extra-toggle-classes prop with tests and docs. closes [#1550](https://github.com/bootstrap-vue/bootstrap-vue/issues/1550). ([#1555](https://github.com/bootstrap-vue/bootstrap-vue/issues/1555)) ([7967018](https://github.com/bootstrap-vue/bootstrap-vue/commit/7967018))
+
+
+
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.4.0...v1.4.1) (2018-01-14)
+
+
+### Bug Fixes
+
+* **alert:** import button-close in alert with a name matching tag. ([#1523](https://github.com/bootstrap-vue/bootstrap-vue/issues/1523)) fixes [#1522](https://github.com/bootstrap-vue/bootstrap-vue/issues/1522). ([51b527f](https://github.com/bootstrap-vue/bootstrap-vue/commit/51b527f))
+* **docs play:** prevent duplicate key errors in console output ([#1476](https://github.com/bootstrap-vue/bootstrap-vue/issues/1476)) ([68deee1](https://github.com/bootstrap-vue/bootstrap-vue/commit/68deee1))
+* **dropdown:** fix condition for when position-static is applied ([#1477](https://github.com/bootstrap-vue/bootstrap-vue/issues/1477)) ([1717edb](https://github.com/bootstrap-vue/bootstrap-vue/commit/1717edb))
+* **dropdown:** fixed aria-labbeledby for non-split dropdowns ([d597dbc](https://github.com/bootstrap-vue/bootstrap-vue/commit/d597dbc))
+* **dropdown:** prevent toggle click from closing in collapsed navbar ([#1475](https://github.com/bootstrap-vue/bootstrap-vue/issues/1475)) ([24ef1e6](https://github.com/bootstrap-vue/bootstrap-vue/commit/24ef1e6)), closes [#1474](https://github.com/bootstrap-vue/bootstrap-vue/issues/1474)
+* **id:** fixed check for _uid in client side id generator ([#1499](https://github.com/bootstrap-vue/bootstrap-vue/issues/1499)) ([f3fe0f4](https://github.com/bootstrap-vue/bootstrap-vue/commit/f3fe0f4))
+
+
+### Performance Improvements
+
+* **dropdown:** changed 'this' to 't' ([#1500](https://github.com/bootstrap-vue/bootstrap-vue/issues/1500)) ([ace3e94](https://github.com/bootstrap-vue/bootstrap-vue/commit/ace3e94))
+
+
+
+<a name="1.4.0"></a>
+## [v1.4.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.3.0...v1.4.0)
+Released: 2017-12-15
+
+
+### Bug Fixes v1.4.0
+
+* **button:** allow custom size classes to be passed to the size prop ([#1389](https://github.com/bootstrap-vue/bootstrap-vue/issues/1389)) ([41a46b2](https://github.com/bootstrap-vue/bootstrap-vue/commit/41a46b2))
+* **carousel:** clear timers on beforeDestroy ([fa1c083](https://github.com/bootstrap-vue/bootstrap-vue/commit/fa1c083))
+* **carousel:** remove un-needed `aria-` atribute on slides ([#1448](https://github.com/bootstrap-vue/bootstrap-vue/issues/1448)) ([260919f](https://github.com/bootstrap-vue/bootstrap-vue/commit/260919f))
+* **carousel:** uncaught typeerror on empty slides. ([#1401](https://github.com/bootstrap-vue/bootstrap-vue/issues/1401)) ([cadae79](https://github.com/bootstrap-vue/bootstrap-vue/commit/cadae79))
+* **dropdown:** use class `position-static` instead of inline style ([#1451](https://github.com/bootstrap-vue/bootstrap-vue/issues/1451)) ([fc49325](https://github.com/bootstrap-vue/bootstrap-vue/commit/fc49325))
+* **dropdowns:** prevent memory leak on destroy ([#1392](https://github.com/bootstrap-vue/bootstrap-vue/issues/1392)) ([839418e](https://github.com/bootstrap-vue/bootstrap-vue/commit/839418e)), closes [#1391](https://github.com/bootstrap-vue/bootstrap-vue/issues/1391)
+* **form-group:** import b-form-row directly from layout ([8dcce39](https://github.com/bootstrap-vue/bootstrap-vue/commit/8dcce39))
+* **form-radio-group:** prepare for bootstrap V4.beta.3 ([39eb237](https://github.com/bootstrap-vue/bootstrap-vue/commit/39eb237))
+* **form-radio-group:** prepare for bootstrap V4.beta.3 ([5b659d1](https://github.com/bootstrap-vue/bootstrap-vue/commit/5b659d1))
+* **id mixin:** set prop type to String ([9a6eaa5](https://github.com/bootstrap-vue/bootstrap-vue/commit/9a6eaa5))
+* **list-group:** disabled button items ([#1444](https://github.com/bootstrap-vue/bootstrap-vue/issues/1444)) ([c037b38](https://github.com/bootstrap-vue/bootstrap-vue/commit/c037b38))
+* **modal:** rounded-top class no longer needed when header variant applied ([#1433](https://github.com/bootstrap-vue/bootstrap-vue/issues/1433)) ([ecf1bf5](https://github.com/bootstrap-vue/bootstrap-vue/commit/ecf1bf5))
+* **modal:** update centered modal margins to align with BSV4.beta.3 update ([f7e80a8](https://github.com/bootstrap-vue/bootstrap-vue/commit/f7e80a8))
+* **table:** better custom css specificity for when nesting tables ([7acccb9](https://github.com/bootstrap-vue/bootstrap-vue/commit/7acccb9))
+* **table:** correct fixd-top row scoped slot properties ([debf8e2](https://github.com/bootstrap-vue/bootstrap-vue/commit/debf8e2))
+* **table:** initial busy of true always makes table busy ([#1400](https://github.com/bootstrap-vue/bootstrap-vue/issues/1400)) ([029e4d0](https://github.com/bootstrap-vue/bootstrap-vue/commit/029e4d0)), closes [#1398](https://github.com/bootstrap-vue/bootstrap-vue/issues/1398)
+* detach clickout listener in beforeDestroy ([b290cad](https://github.com/bootstrap-vue/bootstrap-vue/commit/b290cad))
+* **table:** use stable sort algorithm to prevent SSR issues ([#1399](https://github.com/bootstrap-vue/bootstrap-vue/issues/1399)) ([21b33f2](https://github.com/bootstrap-vue/bootstrap-vue/commit/21b33f2))
+* **tooltip+popover:** auto-append to `.modal-content` instead of `.modal` ([#1465](https://github.com/bootstrap-vue/bootstrap-vue/issues/1465)) ([b53715c](https://github.com/bootstrap-vue/bootstrap-vue/commit/b53715c)), closes [#1464](https://github.com/bootstrap-vue/bootstrap-vue/issues/1464)
+* remove listenOnRoot handlers in beforeDestroy ([e594490](https://github.com/bootstrap-vue/bootstrap-vue/commit/e594490))
+* SFC transpilation in es buld ([#1410](https://github.com/bootstrap-vue/bootstrap-vue/issues/1410)) ([3ef9572](https://github.com/bootstrap-vue/bootstrap-vue/commit/3ef9572))
+
+
+### Features v1.4.0
+
+* **dropdowns:** add boundary prop for controlling placement constraint ([#1440](https://github.com/bootstrap-vue/bootstrap-vue/issues/1440)) ([01498cb](https://github.com/bootstrap-vue/bootstrap-vue/commit/01498cb))
+* **form-group:** new label-size prop ([b8311e5](https://github.com/bootstrap-vue/bootstrap-vue/commit/b8311e5))
+* **form-group:** new label-size prop ([#1422](https://github.com/bootstrap-vue/bootstrap-vue/issues/1422)) ([dcffb5c](https://github.com/bootstrap-vue/bootstrap-vue/commit/dcffb5c))
+* **form-group:** new prop for label-class, deprecate prop feedback in favor of invalid-feedback ([#1412](https://github.com/bootstrap-vue/bootstrap-vue/issues/1412)) ([44f13a5](https://github.com/bootstrap-vue/bootstrap-vue/commit/44f13a5))
+* **form-group:** render label element if prop label-for set + horizontal layout optimizations ([#1423](https://github.com/bootstrap-vue/bootstrap-vue/issues/1423)) ([ce164bf](https://github.com/bootstrap-vue/bootstrap-vue/commit/ce164bf))
+* **form-group:** set aria-describedby attribute on input if label-for provided ([#1431](https://github.com/bootstrap-vue/bootstrap-vue/issues/1431)) ([6bd12bb](https://github.com/bootstrap-vue/bootstrap-vue/commit/6bd12bb))
+* **modal:** new props for adding classes to header, body and footer ([#1462](https://github.com/bootstrap-vue/bootstrap-vue/issues/1462)) ([bc67a2d](https://github.com/bootstrap-vue/bootstrap-vue/commit/bc67a2d))
+* **pagination+pagination-nav:** remove need for custom active focus style ([#1384](https://github.com/bootstrap-vue/bootstrap-vue/issues/1384)) ([ecd9b6a](https://github.com/bootstrap-vue/bootstrap-vue/commit/ecd9b6a))
+* **table:** add responsive stacked table option ([#1407](https://github.com/bootstrap-vue/bootstrap-vue/issues/1407)) ([26c35ba](https://github.com/bootstrap-vue/bootstrap-vue/commit/26c35ba))
+* **table:** add toggleDetails method to scoped item slots ([#1404](https://github.com/bootstrap-vue/bootstrap-vue/issues/1404)) ([e02fa49](https://github.com/bootstrap-vue/bootstrap-vue/commit/e02fa49))
+* **tabs:** add name to helper component for better debugging ([e436a1d](https://github.com/bootstrap-vue/bootstrap-vue/commit/e436a1d))
+* **tabs:** add no-body prop to b-tab ([#1385](https://github.com/bootstrap-vue/bootstrap-vue/issues/1385)) ([af36c0e](https://github.com/bootstrap-vue/bootstrap-vue/commit/af36c0e))
+* **tooltip+popover:** add boundary element config option (positioning constraint) ([#1439](https://github.com/bootstrap-vue/bootstrap-vue/issues/1439)) ([08fd7ce](https://github.com/bootstrap-vue/bootstrap-vue/commit/08fd7ce))
+* **tooltip+popover:** programmatically disable/enable tooltip or popover ([#1387](https://github.com/bootstrap-vue/bootstrap-vue/issues/1387)) ([c83e0d5](https://github.com/bootstrap-vue/bootstrap-vue/commit/c83e0d5))
+* **v-b-modal:** set role="button" if trigger element is not a button ([aa45d3e](https://github.com/bootstrap-vue/bootstrap-vue/commit/aa45d3e))
+* **v-b-toggle:** add role 'button' when trigger is not a button ([c2dd2d0](https://github.com/bootstrap-vue/bootstrap-vue/commit/c2dd2d0))
+
+
+### Performance Improvements v1.4.0
+
+* **dropdowns:** use non reactive property to store popper.js instance ([#1416](https://github.com/bootstrap-vue/bootstrap-vue/issues/1416)) ([379d9a8](https://github.com/bootstrap-vue/bootstrap-vue/commit/379d9a8))
+* evalute slots() once in functional component render functions ([#1438](https://github.com/bootstrap-vue/bootstrap-vue/issues/1438)) ([3c42477](https://github.com/bootstrap-vue/bootstrap-vue/commit/3c42477))
+
+
+
+<a name="1.3.0"></a>
+## [v1.3.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.2.0...v1.3.0)
+Relased: 2017-11-29
+
+### Bug Fixes v1.3.0
+
+* **button:** allow custom size classes to be passed to the size prop ([#1389](https://github.com/bootstrap-vue/bootstrap-vue/issues/1389)) ([96fb934](https://github.com/bootstrap-vue/bootstrap-vue/commit/96fb934))
+* **carousel:** clear timers on beforeDestroy ([53ea1b4](https://github.com/bootstrap-vue/bootstrap-vue/commit/53ea1b4))
+* **carousel:** uncaught typeerror on empty slides. ([#1401](https://github.com/bootstrap-vue/bootstrap-vue/issues/1401)) ([a2ee9b6](https://github.com/bootstrap-vue/bootstrap-vue/commit/a2ee9b6))
+* **dropdowns:** prevent memory leak on destroy ([#1392](https://github.com/bootstrap-vue/bootstrap-vue/issues/1392)) ([05a5c50](https://github.com/bootstrap-vue/bootstrap-vue/commit/05a5c50)), closes [#1391](https://github.com/bootstrap-vue/bootstrap-vue/issues/1391)
+* **form-group:** import b-form-row directly from layout ([b43d7c8](https://github.com/bootstrap-vue/bootstrap-vue/commit/b43d7c8))
+* **id mixin:** set prop type to String ([37ab5cb](https://github.com/bootstrap-vue/bootstrap-vue/commit/37ab5cb))
+* **table:** better custom css specificity for when nesting tables ([4a2d121](https://github.com/bootstrap-vue/bootstrap-vue/commit/4a2d121))
+* **table:** correct fixd-top row scoped slot properties ([7e042f1](https://github.com/bootstrap-vue/bootstrap-vue/commit/7e042f1))
+* **table:** initial busy of true always makes table busy ([#1400](https://github.com/bootstrap-vue/bootstrap-vue/issues/1400)) ([5daa0df](https://github.com/bootstrap-vue/bootstrap-vue/commit/5daa0df)), closes [#1398](https://github.com/bootstrap-vue/bootstrap-vue/issues/1398)
+* **table:** use stable sort algorithm to prevent SSR issues ([#1399](https://github.com/bootstrap-vue/bootstrap-vue/issues/1399)) ([552c438](https://github.com/bootstrap-vue/bootstrap-vue/commit/552c438))
+* detach clickout listener in beforeDestroy ([89618de](https://github.com/bootstrap-vue/bootstrap-vue/commit/89618de))
+* detach listenOnRoot handlers in beforeDestroy ([7f7eba1](https://github.com/bootstrap-vue/bootstrap-vue/commit/7f7eba1))
+* SFC transpilation in es buld ([#1410](https://github.com/bootstrap-vue/bootstrap-vue/issues/1410)) ([ce80809](https://github.com/bootstrap-vue/bootstrap-vue/commit/ce80809))
+
+
+### Features v1.3.0
+
+* **form-group:** new prop for label-class, deprecate prop feedback in favor of invalid-feedback ([#1412](https://github.com/bootstrap-vue/bootstrap-vue/issues/1412)) ([7d61cb4](https://github.com/bootstrap-vue/bootstrap-vue/commit/7d61cb4))
+* **pagination+pagination-nav:** remove need for custom active focus style ([#1384](https://github.com/bootstrap-vue/bootstrap-vue/issues/1384)) ([1e1b099](https://github.com/bootstrap-vue/bootstrap-vue/commit/1e1b099))
+* **table:** add responsive stacked table option ([#1407](https://github.com/bootstrap-vue/bootstrap-vue/issues/1407)) ([df23115](https://github.com/bootstrap-vue/bootstrap-vue/commit/df23115))
+* **table:** add toggleDetails method to scoped item slots ([#1404](https://github.com/bootstrap-vue/bootstrap-vue/issues/1404)) ([a9c4b7d](https://github.com/bootstrap-vue/bootstrap-vue/commit/a9c4b7d))
+* **tabs:** add name to helper component for better debugging ([51ef9e3](https://github.com/bootstrap-vue/bootstrap-vue/commit/51ef9e3))
+* **tabs:** add no-body prop to b-tab ([#1385](https://github.com/bootstrap-vue/bootstrap-vue/issues/1385)) ([ef3ff06](https://github.com/bootstrap-vue/bootstrap-vue/commit/ef3ff06))
+* **tooltip+popover:** programmatically disable/enable tooltip or popover ([#1387](https://github.com/bootstrap-vue/bootstrap-vue/issues/1387)) ([8104cb4](https://github.com/bootstrap-vue/bootstrap-vue/commit/8104cb4))
+
+
+
+## [v1.2.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.1.0...v1.2.0)
+Released: 2017-11-20
+
+
+### Bug Fixes v1.2.0
+
+* **ci:** auto deploy docs from master branch ([22e432d](https://github.com/bootstrap-vue/bootstrap-vue/commit/22e432d))
+* **form-file:** invalid/valid feedback display for plain file input missing in Bootstrap V4 ([#1373](https://github.com/bootstrap-vue/bootstrap-vue/issues/1373)) ([85ab0d0](https://github.com/bootstrap-vue/bootstrap-vue/commit/85ab0d0))
+* **form-textarea:** initial value population ([#1370](https://github.com/bootstrap-vue/bootstrap-vue/issues/1370)) ([a08a46e](https://github.com/bootstrap-vue/bootstrap-vue/commit/a08a46e)), closes [#1368](https://github.com/bootstrap-vue/bootstrap-vue/issues/1368)
+* **table:** fix outlined table ([e81b107](https://github.com/bootstrap-vue/bootstrap-vue/commit/e81b107))
+* **tabs:** lazy prop regression ([#1372](https://github.com/bootstrap-vue/bootstrap-vue/issues/1372)) ([844cd81](https://github.com/bootstrap-vue/bootstrap-vue/commit/844cd81)), closes [#1371](https://github.com/bootstrap-vue/bootstrap-vue/issues/1371)
+
+
+### Features v1.2.0
+
+* **modal:** fix for overflowing centered modal to scroll ([#1363](https://github.com/bootstrap-vue/bootstrap-vue/issues/1363)) ([3b3ba32](https://github.com/bootstrap-vue/bootstrap-vue/commit/3b3ba32))
+* **pagination+pagination-nav:** disabled styling now works in BS V4.beta.2 ([#1381](https://github.com/bootstrap-vue/bootstrap-vue/issues/1381)) ([d51349f](https://github.com/bootstrap-vue/bootstrap-vue/commit/d51349f))
+* **tabs:** vertical tabs + new props for adding classes to inner elements ([#1362](https://github.com/bootstrap-vue/bootstrap-vue/issues/1362)) ([51d0e03](https://github.com/bootstrap-vue/bootstrap-vue/commit/51d0e03))
+* **tooltip+popover:** ability to programmatically show and hide tooltip and popover ([#1366](https://github.com/bootstrap-vue/bootstrap-vue/issues/1366)) ([360b337](https://github.com/bootstrap-vue/bootstrap-vue/commit/360b337))
+
+
 ## [v1.1.0](https://github.com/bootstrap-vue/bootstrap-vue/compare/v1.0.2...v1.1.0)
 Released: 2017-11-18
 

@@ -1,10 +1,12 @@
-import { observeDom, KeyCodes } from '../../utils'
-import { idMixin } from '../../mixins'
+import KeyCodes from '../../utils/key-codes'
+import observeDom from '../../utils/observe-dom'
+import idMixin from '../../mixins/id'
 
 // Helper component
 const bTabButtonHelper = {
+  name: 'bTabButtonHelper',
   props: {
-    content: { type: String, default: '' },
+    content: { type: [String, Array], default: '' },
     href: { type: String, default: '#' },
     posInSet: { type: Number, default: null },
     setSize: { type: Number, default: null },
@@ -13,33 +15,37 @@ const bTabButtonHelper = {
     active: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     linkClass: { default: null },
-    itemClass: { default: null }
+    itemClass: { default: null },
+    noKeyNav: { type: Boolean, default: false }
   },
   render (h) {
-    const t = this
-    const link = h(
-      'a',
-      {
-        class: [ 'nav-link', { active: t.active, disabled: t.disabled }, t.linkClass ],
-        attrs: {
-          role: 'tab',
-          tabindex: '-1',
-          href: t.href,
-          id: t.id,
-          disabled: t.disabled,
-          'aria-selected': t.active ? 'true' : 'false',
-          'aria-setsize': t.setSize,
-          'aria-posinset': t.posInSet,
-          'aria-controls': t.controls
-        },
-        domProps: { innerHTML: t.content },
-        on: {
-          click: t.handleClick,
-          keydown: t.handleClick
-        }
+    const link = h('a', {
+      class: [
+        'nav-link',
+        { active: this.active, disabled: this.disabled },
+        this.linkClass
+      ],
+      attrs: {
+        role: 'tab',
+        tabindex: this.noKeyNav ? null : '-1',
+        href: this.href,
+        id: this.id,
+        disabled: this.disabled,
+        'aria-selected': this.active ? 'true' : 'false',
+        'aria-setsize': this.setSize,
+        'aria-posinset': this.posInSet,
+        'aria-controls': this.controls
+      },
+      on: {
+        click: this.handleClick,
+        keydown: this.handleClick
       }
+    }, this.content)
+    return h(
+      'li',
+      { class: ['nav-item', this.itemClass], attrs: { role: 'presentation' } },
+      [link]
     )
-    return h('li', { class: [ 'nav-item', t.itemClass ], attrs: { role: 'presentation' } }, [ link ])
   },
   methods: {
     handleClick (evt) {
@@ -47,11 +53,18 @@ const bTabButtonHelper = {
         evt.preventDefault()
         evt.stopPropagation()
       }
+      if (evt.type !== 'click' && this.noKeyNav) {
+        return
+      }
       if (this.disabled) {
         stop()
         return
       }
-      if (evt.type === 'click' || evt.keyCode === KeyCodes.ENTER || evt.keyCode === KeyCodes.SPACE) {
+      if (
+        evt.type === 'click' ||
+        evt.keyCode === KeyCodes.ENTER ||
+        evt.keyCode === KeyCodes.SPACE
+      ) {
         stop()
         this.$emit('click', evt)
       }
@@ -62,65 +75,110 @@ const bTabButtonHelper = {
 export default {
   mixins: [idMixin],
   render (h) {
-    const t = this
     const tabs = this.tabs
-
     // Navigation 'buttons'
     const buttons = tabs.map((tab, index) => {
-      return h(
-        bTabButtonHelper,
-        {
-          key: index,
-          props: {
-            content: tab.headHtml || tab.title,
-            href: tab.href,
-            id: tab.controlledBy || t.safeId(`_BV_tab_${index + 1}_`),
-            active: tab.localActive,
-            disabled: tab.disabled,
-            setSize: tabs.length,
-            posInSet: index + 1,
-            controls: t.safeId('_BV_tab_container_'),
-            linkClass: tab.titleLinkClass,
-            itemClass: tab.titleItemClass
-          },
-          on: { click: (evt) => { t.setTab(index) } }
+      return h(bTabButtonHelper, {
+        key: index,
+        props: {
+          content: tab.$slots.title || tab.title,
+          href: tab.href,
+          id: tab.controlledBy || this.safeId(`_BV_tab_${index + 1}_`),
+          active: tab.localActive,
+          disabled: tab.disabled,
+          setSize: tabs.length,
+          posInSet: index + 1,
+          controls: this.safeId('_BV_tab_container_'),
+          linkClass: tab.titleLinkClass,
+          itemClass: tab.titleItemClass,
+          noKeyNav: this.noKeyNav
+        },
+        on: {
+          click: evt => {
+            this.setTab(index)
+          }
         }
-      )
+      })
     })
 
     // Nav 'button' wrapper
-    const navs = h(
+    let navs = h(
       'ul',
       {
-        class: [ 'nav', `nav-${t.navStyle}`, { [`card-header-${t.navStyle}`]: this.card, small: t.small } ],
-        attrs: { role: 'tablist', tabindex: '0' },
-        on: { keydown: t.onKeynav }
+        class: [
+          'nav',
+          {
+            [`nav-${this.navStyle}`]: !this.noNavStyle,
+            [`card-header-${this.navStyle}`]: this.card && !this.vertical,
+            'card-header': this.card && this.vertical,
+            'h-100': this.card && this.vertical,
+            'flex-column': this.vertical,
+            'border-bottom-0': this.vertical,
+            'rounded-0': this.vertical,
+            small: this.small
+          },
+          this.navClass
+        ],
+        attrs: {
+          role: 'tablist',
+          tabindex: this.noKeyNav ? null : '0',
+          id: this.safeId('_BV_tab_controls_')
+        },
+        on: { keydown: this.onKeynav }
       },
-      [ buttons, t.$slots.tabs ]
+      [buttons, this.$slots.tabs]
     )
+    navs = h(
+      'div',
+      {
+        class: [
+          {
+            'card-header': this.card && !this.vertical && !(this.end || this.bottom),
+            'card-footer': this.card && !this.vertical && (this.end || this.bottom),
+            'col-auto': this.vertical
+          },
+          this.navWrapperClass
+        ]
+      },
+      [navs]
+    )
+
+    let empty
+    if (tabs && tabs.length) {
+      empty = h(false)
+    } else {
+      empty = h(
+        'div',
+        { class: ['tab-pane', 'active', { 'card-body': this.card }] },
+        this.$slots.empty
+      )
+    }
 
     // Main content section
     const content = h(
       'div',
       {
         ref: 'tabsContainer',
-        class: [ 'tab-content', { 'card-body': t.card } ],
-        attrs: { id: t.safeId('_BV_tab_container_') }
+        class: ['tab-content', { col: this.vertical }, this.contentClass],
+        attrs: { id: this.safeId('_BV_tab_container_') }
       },
-      [ t.$slots.default, (tabs && tabs.length) ? h(false) : t.$slots.empty ]
+      [this.$slots.default, empty]
     )
 
     // Render final output
     return h(
-      t.tag,
+      this.tag,
       {
-        class: [ 'tabs' ],
-        attrs: { id: t.safeId() }
+        class: [
+          'tabs',
+          { row: this.vertical, 'no-gutters': this.vertical && this.card }
+        ],
+        attrs: { id: this.safeId() }
       },
       [
-        t.bottom ? content : h(false),
-        h('div', { class: { 'card-header': t.card } }, [ navs ]),
-        t.bottom ? h(false) : content
+        this.end || this.bottom ? content : h(false),
+        [navs],
+        this.end || this.bottom ? h(false) : content
       ]
     )
   },
@@ -151,7 +209,16 @@ export default {
       type: Boolean,
       default: false
     },
+    vertical: {
+      type: Boolean,
+      default: false
+    },
     bottom: {
+      type: Boolean,
+      default: false
+    },
+    end: {
+      // Synonym for 'bottom'
       type: Boolean,
       default: false
     },
@@ -159,10 +226,30 @@ export default {
       type: Boolean,
       default: false
     },
+    noNavStyle: {
+      type: Boolean,
+      default: false
+    },
+    noKeyNav: {
+      type: Boolean,
+      default: false
+    },
     lazy: {
       // This prop is sniffed by the tab child
       type: Boolean,
       default: false
+    },
+    contentClass: {
+      type: [String, Array, Object],
+      default: null
+    },
+    navClass: {
+      type: [String, Array, Object],
+      default: null
+    },
+    navWrapperClass: {
+      type: [String, Array, Object],
+      default: null
     }
   },
   watch: {
@@ -197,15 +284,18 @@ export default {
   },
   methods: {
     /**
-         * Util: Return the sign of a number (as -1, 0, or 1)
-         */
+     * Util: Return the sign of a number (as -1, 0, or 1)
+     */
     sign (x) {
-      return (x === 0) ? 0 : (x > 0 ? 1 : -1)
+      return x === 0 ? 0 : x > 0 ? 1 : -1
     },
     /*
          * handle keyboard navigation
          */
     onKeynav (evt) {
+      if (this.noKeyNav) {
+        return
+      }
       const key = evt.keyCode
       const shift = evt.shiftKey
       function stop () {
@@ -219,7 +309,7 @@ export default {
         } else {
           this.previousTab()
         }
-      } else if (key === KeyCodes.DWON || key === KeyCodes.RIGHT) {
+      } else if (key === KeyCodes.DOWN || key === KeyCodes.RIGHT) {
         stop()
         if (shift) {
           this.setTab(this.tabs.length - 1, false, -1)
@@ -229,23 +319,23 @@ export default {
       }
     },
     /**
-         * Move to next tab
-         */
+     * Move to next tab
+     */
     nextTab () {
       this.setTab(this.currentTab + 1, false, 1)
     },
     /**
-         * Move to previous tab
-         */
+     * Move to previous tab
+     */
     previousTab () {
       this.setTab(this.currentTab - 1, false, -1)
     },
     /**
-         * Set active tab on the tabs collection and the child 'tab' component
-         * Index is the tab we want to activate. Direction is the direction we are moving
-         * so if the tab we requested is disabled, we can skip over it.
-         * Force is used by updateTabs to ensure we have cleared any previous active tabs.
-         */
+     * Set active tab on the tabs collection and the child 'tab' component
+     * Index is the tab we want to activate. Direction is the direction we are moving
+     * so if the tab we requested is disabled, we can skip over it.
+     * Force is used by updateTabs to ensure we have cleared any previous active tabs.
+     */
     setTab (index, force, direction) {
       direction = this.sign(direction || 0)
       index = index || 0
@@ -282,8 +372,8 @@ export default {
       this.currentTab = index
     },
     /**
-         * Dynamically update tabs list
-         */
+     * Dynamically update tabs list
+     */
     updateTabs () {
       // Probe tabs
       this.tabs = this.$children.filter(child => child._isTab)
@@ -302,7 +392,10 @@ export default {
           // Handle last tab being removed
           this.setTab(this.tabs.length - 1, true, -1)
           return
-        } else if (this.tabs[this.currentTab] && !this.tabs[this.currentTab].disabled) {
+        } else if (
+          this.tabs[this.currentTab] &&
+          !this.tabs[this.currentTab].disabled
+        ) {
           tabIndex = this.currentTab
         }
       }
@@ -320,6 +413,8 @@ export default {
   mounted () {
     this.updateTabs()
     // Observe Child changes so we can notify tabs change
-    observeDom(this.$refs.tabsContainer, this.updateTabs.bind(this), {subtree: false})
+    observeDom(this.$refs.tabsContainer, this.updateTabs.bind(this), {
+      subtree: false
+    })
   }
 }

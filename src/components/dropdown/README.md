@@ -26,11 +26,11 @@ clicking (or pressing space or enter when focused), not by hovering; this is an
 
 ## Dropdown supported sub-components
 The following components can be placed inside of your dropdowns. Using any other
-component or markup may break lauout and/or keyboard navigation.
+component or markup may break layout and/or keyboard navigation.
 
 | Sub-component | Description | Aliases
 | --------- | ----------- | -------
-| `<b-dropdown-item>` | Action items that provide click, link, and `<router-link>` functionality. renders as an `<a>` element by default. | `<b-dd-item>`
+| `<b-dropdown-item>` | Action items that provide click, link, and `<router-link>` functionality. Renders as an `<a>` element by default. | `<b-dd-item>`
 | `<b-dropdown-item-button>` | An alternative to `<b-dropdown-item>` that renders a menu item using a `<button>` element. | `<b-dropdown-item-btn>`, `<b-dd-item-button>`, `<b-dd-item-btn>`
 | `<b-dropdown-header>` | A header item, used to help identify a group of dropdown items. | `<b-dd-header>`
 | `<b-dropdown-divider>` | A divider / spacer which can be used to separate dropdown items. | `<b-dd-divider>`
@@ -40,8 +40,8 @@ component or markup may break lauout and/or keyboard navigation.
 ### `<b-dropdown-item>`
 The `<b-dropdown-item>` is typically used to create a navigation link inside your menu.
 Use either the `href` prop or the `to` prop (for router link support) to generate the
-apropriate navigation link. IF neither `href` nor `to` are provided, a standard `<a>`
-link will be generated with an `href` of `#` (with an event hander that will prevent
+appropriate navigation link. If neither `href` nor `to` are provided, a standard `<a>`
+link will be generated with an `href` of `#` (with an event handler that will prevent
 scroll to top behaviour by preventing the default link action).
 
 Disabled the dropdown item by setting the `disabled` prop.
@@ -67,8 +67,8 @@ Disabled the dropdown item button by setting the `disabled` prop.
 <!-- dropdown-item-buttons.vue -->
 ```
 
-When the menu item doesn't trigger navigation, it is reccomended to use
-the `<b-dropdown-item-button>` sub-component
+When the menu item doesn't trigger navigation, it is recommended to use
+the `<b-dropdown-item-button>` sub-component.
 
 ### `<b-dropdown-item-divider>`
 Separate groups of related menu items with `<b-dropdown-divider>`.
@@ -171,6 +171,19 @@ the toggle button:
 <!-- dropdown-offset.vue -->
 ```
 
+### Boundary constraint
+By default, dropdowns are visually constrained to its scroll parent, which will suffice
+in most situations.  However, if you place a dropdown inside an element that has `overflow: scroll`
+(or similar) set, the dropdown menu may - in some situations - get cut off.  To get around this,
+you can specify a boundary element via the `boundary` prop.  Supported values are `'scrollParent'`
+(the default), `'viewport'`, `'window'` or a reference to an HTML element. The boundary value
+is passed directly to Popper.js's `boundariesElement` configuration option.
+
+**Note:** when `boundary` is any value other than the default of `'scrollParent'`, the style
+`position: static` is applied to to the dropdown component's root element in order to allow the
+menu to "break-out" of its scroll container. In some situations this may affect your layout or
+positioning of the dropdown trigger button. In these cases you may need to wrap your
+dropdown inside another element.
 
 ## Split button support
 Create a split dropdown button, where the left button provides standard
@@ -186,28 +199,6 @@ Create a split dropdown button, where the left button provides standard
 </div>
 
 <!-- dropdown-split.vue -->
-```
-
-## Hidden Caret
-The dropdown can be created with the caret hidden by setting the `no-caret` prop to `true`.
-This is useful when the dropdown is to be displayed as an icon.
-
-**Note:** The caret will always be shown when using `split` mode.
-
-```html
-<div>
-  <b-dropdown variant="link" size="lg" no-caret>
-    <template slot="button-content">
-      &#x1f50d;<span class="sr-only">Search</span>
-    </template>
-
-    <b-dropdown-item href="#">Action</b-dropdown-item>
-    <b-dropdown-item href="#">Another action</b-dropdown-item>
-    <b-dropdown-item href="#">Something else here...</b-dropdown-item>
-  </b-dropdown>
-</div>
-
-<!-- dropdown-hidden-toggle.vue -->
 ```
 
 ## Sizing
@@ -248,10 +239,35 @@ Set the `size` prop to either `sm` for small button(s), or `lg` for large button
 
 
 ## Dropdown color variants
-The dropdown trigger buttons can have one of the standard Boostrap contextual variants applied
+The dropdown trigger buttons can have one of the standard Bootstrap contextual variants applied
 by setting the prop `variant` to `success`, `primary`, `info`, `danger`, `link` etc.
 
 See the [Variant Reference](/docs/reference/variants) for a list of supported contextual variants.
+
+You can also apply abritrary classes to the toggle button via the `toggle-class` prop. This prop accepts either a string or array of strings.
+
+## Hidden Caret
+The dropdown can be created with the caret hidden by setting the `no-caret` prop to `true`.
+This is useful when the dropdown is to be displayed as an icon.
+
+```html
+<div>
+  <b-dropdown variant="link" size="lg" no-caret>
+    <template slot="button-content">
+      &#x1f50d;<span class="sr-only">Search</span>
+    </template>
+    <b-dropdown-item href="#">Action</b-dropdown-item>
+    <b-dropdown-item href="#">Another action</b-dropdown-item>
+    <b-dropdown-item href="#">Something else here...</b-dropdown-item>
+  </b-dropdown>
+</div>
+
+<!-- dropdown-hidden-caret.vue -->
+```
+
+**Notes:**
+- The caret will always be shown when using `split` mode.
+- Hidden caret works by removing the `.dropdown-toggle` class from the dropdown trigger button. This may cause styling and/or functionality issues in certain situations where the `.dropdown-toggle` class is required. Your mileage may vary.
 
 
 ## Accessibility
@@ -261,7 +277,7 @@ the appropriate `aria-*` attributes in the rendered markup.
 The default ARIA role is set to `menu`, but you can change this default to another role
 (such as `navigation`) via the `role` prop, depending on your user case.
 
-When a menu item doesn't trigger navigation, it is reccomended to use the
+When a menu item doesn't trigger navigation, it is recommended to use the
 `<b-dropdown-item-button>` sub-component (which is not announced as a link) instead of
 `<b-dropdown-item>` (which is presented as a link to the user).
 
@@ -276,12 +292,12 @@ context about the dropdown item:
 ```html
 <div>
   <b-dropdown id="ddown-aria" text="Dropdown ARIA" variant="primary" class="m-2">
-    <div role="group" aria-lableledby="header1">
+    <div role="group" aria-labelledby="header1">
       <b-dropdown-header id="header1">Groups</b-dropdown-header>
       <b-dropdown-item-button aria-describedby="header1">Add</b-dropdown-item-button>
       <b-dropdown-item-button aria-describedby="header1">Delete</b-dropdown-item-button>
     </div>
-    <div role="group" aria-lableledby="header2">
+    <div role="group" aria-labelledby="header2">
       <b-dropdown-header id="header2">Users</b-dropdown-header>
       <b-dropdown-item-button aria-describedby="header2">Add</b-dropdown-item-button>
       <b-dropdown-item-button aria-describedby="header2">Delete</b-dropdown-item-button>

@@ -2,7 +2,13 @@ window.app = new Vue({
   el: '#app',
   data: {
     slide: 0,
-    sliding: null
+    sliding: null,
+    interval: 0
+  },
+  mounted () {
+    // this.$nextTick(() => {
+    //   this.slide = 2
+    // })
   },
   methods: {
     blankImg (x, y) {

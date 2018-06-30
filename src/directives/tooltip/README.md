@@ -247,6 +247,7 @@ Where [modX] can be (all optional):
  - `html` to enable rendering raw HTML. by default HTML is escaped and converted to text
  - A delay value in the format of `d###` (where `###` is in ms, defaults to 0);
  - An offset value in pixels in the format of `o###` (where `###` is the number of pixels, defaults to 0. Negative values allowed)
+ - A boundary setting of `window` or `viewport`.  The element to constrain the visual placement of the tooltip. If not specified, the boundary defaults to the trigger element's scroll parent (in most cases this will suffice).
 
 Where `<value>` can be (optional):
  - A string containing the title of the tooltip
@@ -268,6 +269,7 @@ Where `<value>` can be (optional):
 | `trigger` | String | `'hover focus'` | How tooltip is triggered: `click`, `hover`, `focus`. You may pass multiple triggers; separate them with a space.
 | `offset` | Number or String | `0` | Offset of the tooltip relative to its target. For more information refer to Popper.js's offset docs.
 | `fallbackPlacement` | String or Array | `'flip'` | Allow to specify which position Popper will use on fallback. For more information refer to Popper.js's behavior docs
+| `boundary` | String or HTMLElement reference |`'scrollParent'` | The container that the tooltip will be constrained visually. The default should suffice in most cases, but you may need to chagne this if your target element is in a small container with overflow scroll. Supported values: `'scrollParent'` (default), `'viewport'`, `'window'`, or a reference to an HTML element.
 
 
 ### Usage
@@ -304,12 +306,63 @@ v-b-tooltip="{title: 'Title', placement: 'bottom'}"
 ```
 
 
-## Closing all tooltips
-You can close all open tooltips by emitting the `bv::hide::tooltip` event on $root:
+## Hiding and showing tooltips via $root events
+You can close (hide) **all open tooltips** by emitting the `bv::hide::tooltip` event on $root:
 
 ```js
 this.$root.$emit('bv::hide::tooltip');
 ```
+
+To close a **specific tooltip**, pass the trigger element's `id` as the first argument:
+
+```js
+this.$root.$emit('bv::show::tooltip', 'my-trigger-button-id');
+```
+
+To open a **specific tooltip**, pass the trigger element's `id` as the first argument when
+emitting the `bv::show::tooltip` $root event:
+
+```js
+this.$root.$emit('bv::show::tooltip', 'my-trigger-button-id');
+```
+
+To open all popovers simultaneously, omit the `id` argument when emitting the
+`bv::show::tooltip` event.
+
+These events work for both the component **and** directive versions of tooltip.
+
+Note the **trigger element** must exist in the DOM and be in a visible state in order
+for the tooltip to show.
+
+
+## Disabling and enabling tooltips via $root events
+You can disable **all open tooltips** by emitting the `bv::disable::tooltip` event on $root:
+
+```js
+this.$root.$emit('bv::disable::tooltip');
+```
+
+To disable a **specific tooltip**, pass the trigger element's `id` as the first argument:
+
+```js
+this.$root.$emit('bv::disable::tooltip', 'my-trigger-button-id');
+```
+
+To enable a **specific tooltip**, pass the trigger element's `id` as the first argument when
+emitting the `bv::enable::tooltip` $root event:
+
+```js
+this.$root.$emit('bv::enable::tooltip', 'my-trigger-button-id');
+```
+
+To enable all popovers simultaneously, omit the `id` argument when emitting the
+`bv::enable::tooltip` event.
+
+These events work for both the component **and** directive versions of tooltip.
+
+Note the **trigger element** must exist in the DOM in order for the
+tooltip to be enabled or disabled.
+
 
 ## See also
 - [`v-b-popover` directive](/docs/directives/popover)

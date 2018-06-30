@@ -1,6 +1,7 @@
-import { observeDom, KeyCodes } from '../../utils'
+import observeDom from '../../utils/observe-dom'
+import KeyCodes from '../../utils/key-codes'
 import { selectAll, reflow, addClass, removeClass, setAttr, eventOn, eventOff } from '../../utils/dom'
-import { idMixin } from '../../mixins'
+import idMixin from '../../mixins/id'
 
 // Slide directional classes
 const DIRECTION = {
@@ -25,7 +26,7 @@ const TransitionEndEvents = {
   transition: 'transitionend'
 }
 
-// Return the browser specific transitionend event name
+// Return the browser specific transitionEnd event name
 function getTransisionEndEvent (el) {
   for (const name in TransitionEndEvents) {
     if (el.style[name] !== undefined) {
@@ -39,8 +40,6 @@ function getTransisionEndEvent (el) {
 export default {
   mixins: [ idMixin ],
   render (h) {
-    const t = this
-
     // Wrapper for slides
     const inner = h(
       'div',
@@ -48,67 +47,67 @@ export default {
         ref: 'inner',
         class: [ 'carousel-inner' ],
         attrs: {
-          id: t.safeId('__BV_inner_'),
+          id: this.safeId('__BV_inner_'),
           role: 'list'
         }
       },
-      [ t.$slots.default ]
+      [ this.$slots.default ]
     )
 
     // Prev and Next Controls
     let controls = h(false)
-    if (t.controls) {
+    if (this.controls) {
       controls = [
         h(
           'a',
           {
             class: [ 'carousel-control-prev' ],
-            attrs: { href: '#', role: 'button', 'aria-controls': t.safeId('__BV_inner_') },
+            attrs: { href: '#', role: 'button', 'aria-controls': this.safeId('__BV_inner_') },
             on: {
               click: (evt) => {
                 evt.preventDefault()
                 evt.stopPropagation()
-                t.prev()
+                this.prev()
               },
               keydown: (evt) => {
                 const keyCode = evt.keyCode
                 if (keyCode === KeyCodes.SPACE || keyCode === KeyCodes.ENTER) {
                   evt.preventDefault()
                   evt.stopPropagation()
-                  t.prev()
+                  this.prev()
                 }
               }
             }
           },
           [
             h('span', { class: [ 'carousel-control-prev-icon' ], attrs: { 'aria-hidden': 'true' } }),
-            h('span', { class: [ 'sr-only' ] }, [ t.labelPrev ])
+            h('span', { class: [ 'sr-only' ] }, [ this.labelPrev ])
           ]
         ),
         h(
           'a',
           {
             class: [ 'carousel-control-next' ],
-            attrs: { href: '#', role: 'button', 'aria-controls': t.safeId('__BV_inner_') },
+            attrs: { href: '#', role: 'button', 'aria-controls': this.safeId('__BV_inner_') },
             on: {
               click: (evt) => {
                 evt.preventDefault()
                 evt.stopPropagation()
-                t.next()
+                this.next()
               },
               keydown: (evt) => {
                 const keyCode = evt.keyCode
                 if (keyCode === KeyCodes.SPACE || keyCode === KeyCodes.ENTER) {
                   evt.preventDefault()
                   evt.stopPropagation()
-                  t.next()
+                  this.next()
                 }
               }
             }
           },
           [
             h('span', { class: [ 'carousel-control-next-icon' ], attrs: { 'aria-hidden': 'true' } }),
-            h('span', { class: [ 'sr-only' ] }, [ t.labelNext ])
+            h('span', { class: [ 'sr-only' ] }, [ this.labelNext ])
           ]
         )
       ]
@@ -120,40 +119,40 @@ export default {
       {
         class: [ 'carousel-indicators' ],
         directives: [
-          { name: 'show', rawName: 'v-show', value: t.indicators, expression: 'indicators' }
+          { name: 'show', rawName: 'v-show', value: this.indicators, expression: 'indicators' }
         ],
         attrs: {
-          id: t.safeId('__BV_indicators_'),
-          'aria-hidden': t.indicators ? 'false' : 'true',
-          'aria-label': t.labelIndicators,
-          'aria-owns': t.safeId('__BV_inner_')
+          id: this.safeId('__BV_indicators_'),
+          'aria-hidden': this.indicators ? 'false' : 'true',
+          'aria-label': this.labelIndicators,
+          'aria-owns': this.safeId('__BV_inner_')
         }
       },
-      t.slides.map((slide, n) => {
+      this.slides.map((slide, n) => {
         return h(
           'li',
           {
             key: `slide_${n}`,
-            class: { active: n === t.index },
+            class: { active: n === this.index },
             attrs: {
               role: 'button',
-              id: t.safeId(`__BV_indicator_${n + 1}_`),
-              tabindex: t.indicators ? '0' : '-1',
-              'aria-current': n === t.index ? 'true' : 'false',
-              'aria-label': `${t.labelGotoSlide} ${n + 1}`,
-              'aria-describedby': t.slides[n].id || null,
-              'aria-controls': t.safeId('__BV_inner_')
+              id: this.safeId(`__BV_indicator_${n + 1}_`),
+              tabindex: this.indicators ? '0' : '-1',
+              'aria-current': n === this.index ? 'true' : 'false',
+              'aria-label': `${this.labelGotoSlide} ${n + 1}`,
+              'aria-describedby': this.slides[n].id || null,
+              'aria-controls': this.safeId('__BV_inner_')
             },
             on: {
               click: (evt) => {
-                t.setSlide(n)
+                this.setSlide(n)
               },
               keydown: (evt) => {
                 const keyCode = evt.keyCode
                 if (keyCode === KeyCodes.SPACE || keyCode === KeyCodes.ENTER) {
                   evt.preventDefault()
                   evt.stopPropagation()
-                  t.setSlide(n)
+                  this.setSlide(n)
                 }
               }
             }
@@ -167,23 +166,23 @@ export default {
       'div',
       {
         class: [ 'carousel', 'slide' ],
-        style: { background: t.background },
+        style: { background: this.background },
         attrs: {
           role: 'region',
-          id: t.safeId(),
-          'aria-busy': t.isSliding ? 'true' : 'false'
+          id: this.safeId(),
+          'aria-busy': this.isSliding ? 'true' : 'false'
         },
         on: {
-          mouseenter: t.pause,
-          mouseleave: t.restart,
-          focusin: t.pause,
-          focusout: t.restart,
+          mouseenter: this.pause,
+          mouseleave: this.restart,
+          focusin: this.pause,
+          focusout: this.restart,
           keydown: (evt) => {
             const keyCode = evt.keyCode
             if (keyCode === KeyCodes.LEFT || keyCode === KeyCodes.RIGHT) {
               evt.preventDefault()
               evt.stopPropagation()
-              t[keyCode === KeyCodes.LEFT ? 'prev' : 'next']()
+              this[keyCode === KeyCodes.LEFT ? 'prev' : 'next']()
             }
           }
         }
@@ -197,7 +196,8 @@ export default {
       isSliding: false,
       intervalId: null,
       transitionEndEvent: null,
-      slides: []
+      slides: [],
+      direction: null
     }
   },
   props: {
@@ -275,10 +275,12 @@ export default {
     },
     // Previous slide
     prev () {
+      this.direction = 'prev'
       this.setSlide(this.index - 1)
     },
     // Next slide
     next () {
+      this.direction = 'next'
       this.setSlide(this.index + 1)
     },
     // Pause auto rotation
@@ -286,13 +288,15 @@ export default {
       if (this.isCycling) {
         clearInterval(this.intervalId)
         this.intervalId = null
-        // Make current slide focusable for screen readers
-        this.slides[this.index].tabIndex = 0
+        if (this.slides[this.index]) {
+          // Make current slide focusable for screen readers
+          this.slides[this.index].tabIndex = 0
+        }
       }
     },
     // Start auto rotate slides
     start () {
-      // Don't start if no intetrval, or if we are already running
+      // Don't start if no interval, or if we are already running
       if (!this.interval || this.isCycling) {
         return
       }
@@ -319,7 +323,6 @@ export default {
       const index = Math.max(0, Math.min(Math.floor(this.index), numSlides - 1))
       this.slides.forEach((slide, idx) => {
         const n = idx + 1
-        const id = this.safeId(`__BV_indicator_${n}_`)
         if (idx === index) {
           addClass(slide, 'active')
         } else {
@@ -329,13 +332,16 @@ export default {
         setAttr(slide, 'aria-posinset', String(n))
         setAttr(slide, 'aria-setsize', String(numSlides))
         slide.tabIndex = -1
-        if (id) {
-          setAttr(slide, 'aria-controlledby', id)
-        }
       })
       // Set slide as active
       this.setSlide(index)
       this.start()
+    },
+    calcDirection (direction = null, curIndex = 0, nextIndex = 0) {
+      if (!direction) {
+        return (nextIndex > curIndex) ? DIRECTION.next : DIRECTION.prev
+      }
+      return DIRECTION[direction]
     }
   },
   watch: {
@@ -362,13 +368,7 @@ export default {
         return
       }
       // Determine sliding direction
-      let direction = (val > oldVal) ? DIRECTION.next : DIRECTION.prev
-      // Rotates
-      if (oldVal === 0 && val === this.slides.length - 1) {
-        direction = DIRECTION.prev
-      } else if (oldVal === this.slides.length - 1 && val === 0) {
-        direction = DIRECTION.next
-      }
+      let direction = this.calcDirection(this.direction, oldVal, val)
       // Determine current and next slides
       const currentSlide = this.slides[oldVal]
       const nextSlide = this.slides[val]
@@ -388,6 +388,7 @@ export default {
       addClass(nextSlide, direction.dirClass)
       // Transition End handler
       let called = false
+      /* istanbul ignore next: dificult to test */
       const onceTransEnd = (evt) => {
         if (called) {
           return
@@ -420,6 +421,7 @@ export default {
           })
         }
         this.isSliding = false
+        this.direction = null
         // Notify ourselves that we're done sliding (slid)
         this.$nextTick(() => this.$emit('sliding-end', val))
       }
@@ -451,9 +453,11 @@ export default {
       attributeFilter: [ 'id' ]
     })
   },
-  destroyed () {
+  /* istanbul ignore next: dificult to test */
+  beforeDestroy () {
     clearInterval(this.intervalId)
     clearTimeout(this._animationTimeout)
+    this.intervalId = null
     this._animationTimeout = null
   }
 }

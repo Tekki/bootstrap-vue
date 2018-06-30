@@ -1,80 +1,104 @@
-import { idMixin, formRadioCheckMixin, formMixin, formSizeMixin, formStateMixin, formCustomMixin } from '../../mixins'
+import idMixin from '../../mixins/id'
+import formRadioCheckMixin from '../../mixins/form-radio-check'
+import formMixin from '../../mixins/form'
+import formSizeMixin from '../../mixins/form-size'
+import formStateMixin from '../../mixins/form-state'
+import formCustomMixin from '../../mixins/form-custom'
 import { isArray } from '../../utils/array'
-import { looseEqual } from '../../utils'
+import looseEqual from '../../utils/loose-equal'
 
 export default {
-  mixins: [idMixin, formRadioCheckMixin, formMixin, formSizeMixin, formStateMixin, formCustomMixin],
+  mixins: [
+    idMixin,
+    formRadioCheckMixin,
+    formMixin,
+    formSizeMixin,
+    formStateMixin,
+    formCustomMixin
+  ],
   render (h) {
-    const t = this
-
-    const input = h(
-      'input',
-      {
-        ref: 'check',
-        class: [t.is_ButtonMode ? '' : (t.is_Plain ? 'form-check-input' : 'custom-control-input'), t.get_StateClass],
-        directives: [
-          { name: 'model', rawName: 'v-model', value: t.computedLocalChecked, expression: 'computedLocalChecked' }
-        ],
-        attrs: {
-          id: t.safeId(),
-          type: 'checkbox',
-          name: t.get_Name,
-          disabled: t.is_Disabled,
-          required: t.is_Required,
-          autocomplete: 'off',
-          'true-value': t.value,
-          'false-value': t.uncheckedValue,
-          'aria-required': t.is_Required ? 'true' : null
-        },
-        domProps: { value: t.value, checked: t.is_Checked },
-        on: {
-          focus: t.handleFocus,
-          blur: t.handleFocus,
-          change: t.emitChange,
-          __c: (evt) => {
-            const $$a = t.computedLocalChecked
-            const $$el = evt.target
-            if (isArray($$a)) {
-              // Multiple checkbox
-              const $$v = t.value
-              let $$i = t._i($$a, $$v) // Vue's 'loose' Array.indexOf
-              if ($$el.checked) {
-                // Append value to array
-                $$i < 0 && (t.computedLocalChecked = $$a.concat([$$v]))
-              } else {
-                // Remove value from array
-                $$i > -1 && (t.computedLocalChecked = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-              }
+    const input = h('input', {
+      ref: 'check',
+      class: [
+        this.is_ButtonMode
+          ? ''
+          : this.is_Plain ? 'form-check-input' : 'custom-control-input',
+        this.get_StateClass
+      ],
+      directives: [
+        {
+          name: 'model',
+          rawName: 'v-model',
+          value: this.computedLocalChecked,
+          expression: 'computedLocalChecked'
+        }
+      ],
+      attrs: {
+        id: this.safeId(),
+        type: 'checkbox',
+        name: this.get_Name,
+        disabled: this.is_Disabled,
+        required: this.is_Required,
+        autocomplete: 'off',
+        'true-value': this.value,
+        'false-value': this.uncheckedValue,
+        'aria-required': this.is_Required ? 'true' : null
+      },
+      domProps: { value: this.value, checked: this.is_Checked },
+      on: {
+        focus: this.handleFocus,
+        blur: this.handleFocus,
+        change: this.emitChange,
+        __c: evt => {
+          const $$a = this.computedLocalChecked
+          const $$el = evt.target
+          if (isArray($$a)) {
+            // Multiple checkbox
+            const $$v = this.value
+            let $$i = this._i($$a, $$v) // Vue's 'loose' Array.indexOf
+            if ($$el.checked) {
+              // Append value to array
+              $$i < 0 && (this.computedLocalChecked = $$a.concat([$$v]))
             } else {
-              // Single checkbox
-              t.computedLocalChecked = $$el.checked ? t.value : t.uncheckedValue
+              // Remove value from array
+              $$i > -1 &&
+                (this.computedLocalChecked = $$a
+                  .slice(0, $$i)
+                  .concat($$a.slice($$i + 1)))
             }
+          } else {
+            // Single checkbox
+            this.computedLocalChecked = $$el.checked ? this.value : this.uncheckedValue
           }
         }
       }
-    )
-
-    let indicator = h(false)
-    if (!t.is_ButtonMode && !t.is_Plain) {
-      indicator = h('span', { class: 'custom-control-indicator', attrs: { 'aria-hidden': 'true' } })
-    }
+    })
 
     const description = h(
-      'span',
-      { class: t.is_ButtonMode ? null : (t.is_Plain ? 'form-check-description' : 'custom-control-description') },
-      [t.$slots.default]
+      this.is_ButtonMode ? 'span' : 'label',
+      {
+        class: this.is_ButtonMode
+          ? null
+          : this.is_Plain ? 'form-check-label' : 'custom-control-label',
+        attrs: { for: this.is_ButtonMode ? null : this.safeId() }
+      },
+      [this.$slots.default]
     )
 
-    const label = h(
-      'label',
-      { class: [t.is_ButtonMode ? t.buttonClasses : t.is_Plain ? 'form-check-label' : t.labelClasses] },
-      [input, indicator, description]
-    )
-
-    if (t.is_Plain && !t.is_ButtonMode) {
-      return h('div', { class: ['form-check', { 'form-check-inline': !t.is_Stacked }] }, [label])
+    if (!this.is_ButtonMode) {
+      return h(
+        'div',
+        {
+          class: [
+            this.is_Plain ? 'form-check' : this.labelClasses,
+            { 'form-check-inline': this.is_Plain && !this.is_Stacked },
+            { 'custom-control-inline': !this.is_Plain && !this.is_Stacked }
+          ]
+        },
+        [input, description]
+      )
     } else {
-      return label
+      return h('label', { class: [this.buttonClasses] }, [input, description])
     }
   },
   props: {

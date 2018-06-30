@@ -3,7 +3,8 @@
  */
 
 import { assign } from '../../utils/object'
-import { observeDom, warn } from '../../utils'
+import observeDom from '../../utils/observe-dom'
+import warn from '../../utils/warn'
 import {
   isElement,
   isVisible,
@@ -80,11 +81,13 @@ const TransitionEndEvents = [
  */
 
 // Better var type detection
+/* istanbul ignore next: not easy to test */
 function toType (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
 }
 
 // Check config properties for expected types
+/* istanbul ignore next: not easy to test */
 function typeCheckConfig (componentName, config, configTypes) {
   for (const property in configTypes) {
     if (Object.prototype.hasOwnProperty.call(configTypes, property)) {
@@ -110,6 +113,7 @@ function typeCheckConfig (componentName, config, configTypes) {
  * ------------------------------------------------------------------------
  */
 
+/* istanbul ignore next: not easy to test */
 class ScrollSpy {
   constructor (element, config, $root) {
     // The element we activate links in
